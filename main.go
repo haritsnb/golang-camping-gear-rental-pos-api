@@ -27,16 +27,19 @@ func main() {
 	revokedRepo := repositories.NewRevokedTokenRepository(db)
 	roleRepo := repositories.NewRoleRepository(db)
 	userRepo := repositories.NewUserRepository(db)
+	custRepo := repositories.NewCustomerRepository(db)
 
 	// LAYER SERVICES
 	authService := services.NewAuthService(userRepo, revokedRepo)
 	roleService := services.NewRoleService(roleRepo)
 	userService := services.NewUserService(userRepo)
+	custService := services.NewCustomerService(custRepo)
 
 	// LAYER CONTROLLERS
 	authController := controllers.NewAuthController(authService)
 	roleController := controllers.NewRoleController(roleService)
 	userController := controllers.NewUserController(userService)
+	custController := controllers.NewCustomerController(custService)
 
 	router := gin.Default()
 
@@ -74,6 +77,18 @@ func main() {
 				usersGroup.PUT("/:id", userController.Update)
 				usersGroup.DELETE("/:id", userController.Delete)
 				usersGroup.DELETE("/:id/force", userController.ForceDelete)
+			}
+
+			custGroup := protected.Group("/customers")
+			{
+				custGroup.GET("", custController.GetAll)
+				custGroup.GET("/:id", custController.GetByID)
+				custGroup.POST("", custController.Create)
+				custGroup.POST("/:id", custController.Restore)
+				custGroup.PUT("/:id", custController.Update)
+				custGroup.PATCH("/:id/blacklist", middlewares.RoleGuard("admin"), custController.Blacklist)
+				custGroup.DELETE("/:id", middlewares.RoleGuard("admin"), custController.Delete)
+				custGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), custController.ForceDelete)
 			}
 		}
 	}
