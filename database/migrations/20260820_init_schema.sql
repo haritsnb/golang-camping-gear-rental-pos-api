@@ -1,4 +1,5 @@
 -- +migrate Up
+
 CREATE TABLE roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
@@ -201,7 +202,9 @@ CREATE INDEX idx_product_units_code ON product_units(unit_code);
 CREATE INDEX idx_product_units_status ON product_units(status);
 CREATE INDEX idx_rentals_invoice ON rentals(invoice_number);
 
+
 -- +migrate Down
+
 DROP TABLE IF EXISTS revoked_tokens CASCADE;
 DROP TABLE IF EXISTS maintenance CASCADE;
 DROP TABLE IF EXISTS payments CASCADE;
