@@ -32,6 +32,10 @@ func main() {
 	brandRepo := repositories.NewBrandRepository(db)
 	prodRepo := repositories.NewProductRepository(db)
 	unitRepo := repositories.NewProductUnitRepository(db)
+	rentalRepo := repositories.NewRentalRepository(db)
+	rentalItemRepo := repositories.NewRentalItemRepository(db)
+	payRepo := repositories.NewPaymentRepository(db)
+	maintRepo := repositories.NewMaintenanceRepository(db)
 
 	// LAYER SERVICES
 	authService := services.NewAuthService(userRepo, revokedRepo)
@@ -42,6 +46,9 @@ func main() {
 	brandService := services.NewBrandService(brandRepo)
 	prodService := services.NewProductService(prodRepo)
 	unitService := services.NewProductUnitService(unitRepo)
+	payService := services.NewPaymentService(payRepo)
+	maintService := services.NewMaintenanceService(db, maintRepo, unitRepo)
+	rentalService := services.NewRentalService(db, rentalRepo, rentalItemRepo, unitRepo, prodRepo, custRepo, payRepo, maintRepo)
 
 	// LAYER CONTROLLERS
 	authController := controllers.NewAuthController(authService)
@@ -52,6 +59,9 @@ func main() {
 	brandController := controllers.NewBrandController(brandService)
 	prodController := controllers.NewProductController(prodService)
 	unitController := controllers.NewProductUnitController(unitService)
+	rentalController := controllers.NewRentalController(rentalService)
+	payController := controllers.NewPaymentController(payService)
+	maintController := controllers.NewMaintenanceController(maintService)
 
 	router := gin.Default()
 
@@ -146,6 +156,44 @@ func main() {
 				unitGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), unitController.Update)
 				unitGroup.DELETE("/:id", middlewares.RoleGuard("admin"), unitController.Delete)
 				unitGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), unitController.ForceDelete)
+			}
+
+			rentalGroup := protected.Group("/rentals")
+			{
+				rentalGroup.GET("", rentalController.GetAll)
+				rentalGroup.GET("/:id", rentalController.GetByID)
+				rentalGroup.POST("/booking", rentalController.Booking)
+				rentalGroup.POST("/:id/handover", rentalController.Handover)
+				rentalGroup.POST("/:id/return", rentalController.Return)
+				rentalGroup.POST("/:id/settlement", rentalController.Settlement)
+				rentalGroup.POST("/:id/cancel", rentalController.Cancel)
+				rentalGroup.POST("/:id", middlewares.RoleGuard("admin"), rentalController.Restore)
+				rentalGroup.PUT("/:id", middlewares.RoleGuard("admin"), rentalController.Update)
+				rentalGroup.DELETE("/:id", middlewares.RoleGuard("admin"), rentalController.Delete)
+				rentalGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), rentalController.ForceDelete)
+			}
+
+			payGroup := protected.Group("/payments")
+			{
+				payGroup.GET("/rental/:rental_id", payController.GetByRentalID)
+				payGroup.GET("/:id", payController.GetByID)
+				payGroup.POST("", payController.Create)
+				payGroup.POST("/:id", middlewares.RoleGuard("admin"), payController.Restore)
+				payGroup.PUT("/:id", middlewares.RoleGuard("admin"), payController.Update)
+				payGroup.DELETE("/:id", middlewares.RoleGuard("admin"), payController.Delete)
+				payGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), payController.ForceDelete)
+			}
+
+			maintGroup := protected.Group("/maintenance")
+			{
+				maintGroup.GET("", maintController.GetAll)
+				maintGroup.GET("/:id", maintController.GetByID)
+				maintGroup.POST("", middlewares.RoleGuard("admin", "staff"), maintController.Create)
+				maintGroup.POST("/:id", middlewares.RoleGuard("admin"), maintController.Restore)
+				maintGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), maintController.Update)
+				maintGroup.PATCH("/:id/complete", middlewares.RoleGuard("admin", "staff"), maintController.Complete)
+				maintGroup.DELETE("/:id", middlewares.RoleGuard("admin"), maintController.Delete)
+				maintGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), maintController.ForceDelete)
 			}
 		}
 	}
