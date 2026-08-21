@@ -28,18 +28,30 @@ func main() {
 	roleRepo := repositories.NewRoleRepository(db)
 	userRepo := repositories.NewUserRepository(db)
 	custRepo := repositories.NewCustomerRepository(db)
+	catRepo := repositories.NewCategoryRepository(db)
+	brandRepo := repositories.NewBrandRepository(db)
+	prodRepo := repositories.NewProductRepository(db)
+	unitRepo := repositories.NewProductUnitRepository(db)
 
 	// LAYER SERVICES
 	authService := services.NewAuthService(userRepo, revokedRepo)
 	roleService := services.NewRoleService(roleRepo)
 	userService := services.NewUserService(userRepo)
 	custService := services.NewCustomerService(custRepo)
+	catService := services.NewCategoryService(catRepo)
+	brandService := services.NewBrandService(brandRepo)
+	prodService := services.NewProductService(prodRepo)
+	unitService := services.NewProductUnitService(unitRepo)
 
 	// LAYER CONTROLLERS
 	authController := controllers.NewAuthController(authService)
 	roleController := controllers.NewRoleController(roleService)
 	userController := controllers.NewUserController(userService)
 	custController := controllers.NewCustomerController(custService)
+	catController := controllers.NewCategoryController(catService)
+	brandController := controllers.NewBrandController(brandService)
+	prodController := controllers.NewProductController(prodService)
+	unitController := controllers.NewProductUnitController(unitService)
 
 	router := gin.Default()
 
@@ -89,6 +101,51 @@ func main() {
 				custGroup.PATCH("/:id/blacklist", middlewares.RoleGuard("admin"), custController.Blacklist)
 				custGroup.DELETE("/:id", middlewares.RoleGuard("admin"), custController.Delete)
 				custGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), custController.ForceDelete)
+			}
+
+			catGroup := protected.Group("/categories")
+			{
+				catGroup.GET("", catController.GetAll)
+				catGroup.GET("/:id", catController.GetByID)
+				catGroup.POST("", middlewares.RoleGuard("admin", "staff"), catController.Create)
+				catGroup.POST("/:id", middlewares.RoleGuard("admin"), catController.Restore)
+				catGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), catController.Update)
+				catGroup.DELETE("/:id", middlewares.RoleGuard("admin"), catController.Delete)
+				catGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), catController.ForceDelete)
+			}
+
+			brandGroup := protected.Group("/brands")
+			{
+				brandGroup.GET("", brandController.GetAll)
+				brandGroup.GET("/:id", brandController.GetByID)
+				brandGroup.POST("", middlewares.RoleGuard("admin", "staff"), brandController.Create)
+				brandGroup.POST("/:id", middlewares.RoleGuard("admin"), brandController.Restore)
+				brandGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), brandController.Update)
+				brandGroup.DELETE("/:id", middlewares.RoleGuard("admin"), brandController.Delete)
+				brandGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), brandController.ForceDelete)
+			}
+
+			prodGroup := protected.Group("/products")
+			{
+				prodGroup.GET("", prodController.GetAll)
+				prodGroup.GET("/:id", prodController.GetByID)
+				prodGroup.POST("", middlewares.RoleGuard("admin", "staff"), prodController.Create)
+				prodGroup.POST("/:id", middlewares.RoleGuard("admin"), prodController.Restore)
+				prodGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), prodController.Update)
+				prodGroup.DELETE("/:id", middlewares.RoleGuard("admin"), prodController.Delete)
+				prodGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), prodController.ForceDelete)
+			}
+
+			unitGroup := protected.Group("/product-units")
+			{
+				unitGroup.GET("", unitController.GetAll)
+				unitGroup.GET("/:id", unitController.GetByID)
+				unitGroup.GET("/scan/:unit_code", unitController.ScanUnitCode)
+				unitGroup.POST("", middlewares.RoleGuard("admin", "staff"), unitController.Create)
+				unitGroup.POST("/:id", middlewares.RoleGuard("admin"), unitController.Restore)
+				unitGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), unitController.Update)
+				unitGroup.DELETE("/:id", middlewares.RoleGuard("admin"), unitController.Delete)
+				unitGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), unitController.ForceDelete)
 			}
 		}
 	}
