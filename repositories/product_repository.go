@@ -25,11 +25,18 @@ func (r *productRepo) GetAll(ctx context.Context) ([]models.Product, error) {
 		SELECT 
 			p.id, p.category_id, c.name, p.brand_id, b.name, p.name, 
 			p.rental_price_per_day, p.default_deposit, p.late_fee_per_day, 
-			p.lost_compensation_fee, p.is_active, p.created_at, p.modified_at
+			p.lost_compensation_fee, p.is_active,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL) AS total_units,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL AND pu.status = 'available') AS available_units,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL AND pu.status = 'rented') AS rented_units,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL AND pu.status = 'maintenance') AS maintenance_units,
+			p.created_at, p.modified_at
 		FROM products p
 		JOIN categories c ON c.id = p.category_id
 		JOIN brands b ON b.id = p.brand_id
+		LEFT JOIN product_units pu ON pu.product_id = p.id AND pu.deleted_at IS NULL
 		WHERE p.deleted_at IS NULL 
+		GROUP BY p.id, c.name, b.name
 		ORDER BY p.id DESC`
 
 	rows, err := r.db.QueryContext(ctx, query)
@@ -41,7 +48,12 @@ func (r *productRepo) GetAll(ctx context.Context) ([]models.Product, error) {
 	var products []models.Product
 	for rows.Next() {
 		var p models.Product
-		if err := rows.Scan(&p.ID, &p.CategoryID, &p.CategoryName, &p.BrandID, &p.BrandName, &p.Name, &p.RentalPricePerDay, &p.DefaultDeposit, &p.LateFeePerDay, &p.LostCompensationFee, &p.IsActive, &p.CreatedAt, &p.ModifiedAt); err != nil {
+		if err := rows.Scan(
+			&p.ID, &p.CategoryID, &p.CategoryName, &p.BrandID, &p.BrandName, &p.Name,
+			&p.RentalPricePerDay, &p.DefaultDeposit, &p.LateFeePerDay, &p.LostCompensationFee, &p.IsActive,
+			&p.TotalUnits, &p.AvailableUnits, &p.RentedUnits, &p.MaintenanceUnits,
+			&p.CreatedAt, &p.ModifiedAt,
+		); err != nil {
 			return nil, err
 		}
 		products = append(products, p)
@@ -54,17 +66,25 @@ func (r *productRepo) GetByID(ctx context.Context, id int) (*models.Product, err
 		SELECT 
 			p.id, p.category_id, c.name, p.brand_id, b.name, p.name, 
 			p.rental_price_per_day, p.default_deposit, p.late_fee_per_day, 
-			p.lost_compensation_fee, p.is_active, p.created_at, p.modified_at
+			p.lost_compensation_fee, p.is_active,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL) AS total_units,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL AND pu.status = 'available') AS available_units,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL AND pu.status = 'rented') AS rented_units,
+			COUNT(pu.id) FILTER (WHERE pu.deleted_at IS NULL AND pu.status = 'maintenance') AS maintenance_units,
+			p.created_at, p.modified_at
 		FROM products p
 		JOIN categories c ON c.id = p.category_id
 		JOIN brands b ON b.id = p.brand_id
-		WHERE p.id = $1 AND p.deleted_at IS NULL`
+		LEFT JOIN product_units pu ON pu.product_id = p.id AND pu.deleted_at IS NULL
+		WHERE p.id = $1 AND p.deleted_at IS NULL
+		GROUP BY p.id, c.name, b.name`
 
 	p := &models.Product{}
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
 		&p.ID, &p.CategoryID, &p.CategoryName, &p.BrandID, &p.BrandName, &p.Name,
-		&p.RentalPricePerDay, &p.DefaultDeposit, &p.LateFeePerDay, &p.LostCompensationFee,
-		&p.IsActive, &p.CreatedAt, &p.ModifiedAt,
+		&p.RentalPricePerDay, &p.DefaultDeposit, &p.LateFeePerDay, &p.LostCompensationFee, &p.IsActive,
+		&p.TotalUnits, &p.AvailableUnits, &p.RentedUnits, &p.MaintenanceUnits,
+		&p.CreatedAt, &p.ModifiedAt,
 	)
 	return p, err
 }

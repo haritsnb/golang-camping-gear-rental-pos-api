@@ -12,6 +12,11 @@ type Product struct {
 	LateFeePerDay       float64 `json:"late_fee_per_day"`
 	LostCompensationFee float64 `json:"lost_compensation_fee"`
 	IsActive            bool    `json:"is_active"`
+	TotalUnits          int     `json:"total_units"`
+	AvailableUnits      int     `json:"available_units"`
+	RentedUnits         int     `json:"rented_units"`
+	MaintenanceUnits    int     `json:"maintenance_units"`
+
 	AuditTrail
 }
 

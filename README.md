@@ -9,7 +9,7 @@ Backend API untuk sistem kasir dan manajemen penyewaan perlengkapan camping. Apl
 
 Clone project dari repository
 ```bash
-git clone https://github.com/haritsnb/final-project-bootcamp-golang-sanbercode.git
+git clone https://github.com/haritsnb/golang-camping-gear-rental-pos-api.git
 ```
 
 ### 2. Konfigurasi File `.env`
