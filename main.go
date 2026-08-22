@@ -63,6 +63,7 @@ func main() {
 	rentalItemRepo := repositories.NewRentalItemRepository(db)
 	payRepo := repositories.NewPaymentRepository(db)
 	maintRepo := repositories.NewMaintenanceRepository(db)
+	reportRepo := repositories.NewReportRepository(db)
 
 	// LAYER SERVICES
 	authService := services.NewAuthService(userRepo, revokedRepo)
@@ -76,6 +77,7 @@ func main() {
 	payService := services.NewPaymentService(payRepo)
 	maintService := services.NewMaintenanceService(db, maintRepo, unitRepo)
 	rentalService := services.NewRentalService(db, rentalRepo, rentalItemRepo, unitRepo, prodRepo, custRepo, payRepo, maintRepo)
+	reportService := services.NewReportService(reportRepo)
 
 	// LAYER CONTROLLERS
 	authController := controllers.NewAuthController(authService)
@@ -89,6 +91,7 @@ func main() {
 	rentalController := controllers.NewRentalController(rentalService)
 	payController := controllers.NewPaymentController(payService)
 	maintController := controllers.NewMaintenanceController(maintService)
+	reportController := controllers.NewReportController(reportService)
 
 	router := gin.Default()
 
@@ -223,6 +226,14 @@ func main() {
 				maintGroup.PATCH("/:id/complete", middlewares.RoleGuard("admin", "staff"), maintController.Complete)
 				maintGroup.DELETE("/:id", middlewares.RoleGuard("admin"), maintController.Delete)
 				maintGroup.DELETE("/:id/force", middlewares.RoleGuard("admin"), maintController.ForceDelete)
+			}
+
+			reportGroup := protected.Group("/reports", middlewares.RoleGuard("admin", "staff"))
+			{
+				reportGroup.GET("/revenue", reportController.GetRevenueReport)
+				reportGroup.GET("/rentals", reportController.GetRentalSummaryReport)
+				reportGroup.GET("/top-products", reportController.GetTopProductsReport)
+				reportGroup.GET("/inventory", reportController.GetInventoryReport)
 			}
 		}
 	}

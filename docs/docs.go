@@ -3856,6 +3856,260 @@ const docTemplate = `{
                 }
             }
         },
+        "/reports/inventory": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Memuat ringkasan seluruh unit fisik inventaris (tersedia, disewa, servis, hilang) beserta total valuasi aset",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Laporan Aset \u0026 Inventaris",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.InventoryReport"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/rentals": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Memuat statistik jumlah status transaksi sewa (booked, active, completed, cancelled)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Laporan Ringkasan Transaksi Rental",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"2026-08-01\"",
+                        "description": "Tanggal Awal (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"2026-08-31\"",
+                        "description": "Tanggal Akhir (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.RentalSummaryReport"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/revenue": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Memuat rekap omset sewa, denda, biaya servis/maintenance alat, dan laba bersih",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Laporan Keuangan \u0026 Laba Bersih",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"2026-08-01\"",
+                        "description": "Tanggal Awal (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"2026-08-31\"",
+                        "description": "Tanggal Akhir (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.RevenueReport"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/top-products": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Memuat daftar peringkat alat camping yang paling sering disewa dan total omsetnya",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Laporan Produk Terlaris",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"2026-08-01\"",
+                        "description": "Tanggal Awal (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"2026-08-31\"",
+                        "description": "Tanggal Akhir (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "description": "Jumlah Data (Default: 10)",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.TopProductReport"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/roles": {
             "get": {
                 "security": [
@@ -4884,6 +5138,32 @@ const docTemplate = `{
                 }
             }
         },
+        "models.InventoryReport": {
+            "type": "object",
+            "properties": {
+                "available_units": {
+                    "type": "integer"
+                },
+                "booked_units": {
+                    "type": "integer"
+                },
+                "lost_units": {
+                    "type": "integer"
+                },
+                "maintenance_units": {
+                    "type": "integer"
+                },
+                "rented_units": {
+                    "type": "integer"
+                },
+                "total_assets_value": {
+                    "type": "number"
+                },
+                "total_units": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Maintenance": {
             "type": "object",
             "properties": {
@@ -5075,6 +5355,9 @@ const docTemplate = `{
         "models.Product": {
             "type": "object",
             "properties": {
+                "available_units": {
+                    "type": "integer"
+                },
                 "brand_id": {
                     "type": "integer"
                 },
@@ -5114,6 +5397,9 @@ const docTemplate = `{
                 "lost_compensation_fee": {
                     "type": "number"
                 },
+                "maintenance_units": {
+                    "type": "integer"
+                },
                 "modified_at": {
                     "type": "string"
                 },
@@ -5125,6 +5411,12 @@ const docTemplate = `{
                 },
                 "rental_price_per_day": {
                     "type": "number"
+                },
+                "rented_units": {
+                    "type": "integer"
+                },
+                "total_units": {
+                    "type": "integer"
                 }
             }
         },
@@ -5490,6 +5782,35 @@ const docTemplate = `{
                 }
             }
         },
+        "models.RentalSummaryReport": {
+            "type": "object",
+            "properties": {
+                "end_date": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "total_active": {
+                    "type": "integer"
+                },
+                "total_booked": {
+                    "type": "integer"
+                },
+                "total_cancelled": {
+                    "type": "integer"
+                },
+                "total_completed": {
+                    "type": "integer"
+                },
+                "total_returned": {
+                    "type": "integer"
+                },
+                "total_transaction": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.RentalUpdateDTO": {
             "type": "object",
             "properties": {
@@ -5535,6 +5856,35 @@ const docTemplate = `{
                 },
                 "return_notes": {
                     "type": "string"
+                }
+            }
+        },
+        "models.RevenueReport": {
+            "type": "object",
+            "properties": {
+                "end_date": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "total_gross_revenue": {
+                    "type": "number"
+                },
+                "total_maintenance_cost": {
+                    "type": "number"
+                },
+                "total_net_profit": {
+                    "type": "number"
+                },
+                "total_penalty_revenue": {
+                    "type": "number"
+                },
+                "total_rental_revenue": {
+                    "type": "number"
+                },
+                "total_transactions": {
+                    "type": "integer"
                 }
             }
         },
@@ -5592,6 +5942,29 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "models.TopProductReport": {
+            "type": "object",
+            "properties": {
+                "brand_name": {
+                    "type": "string"
+                },
+                "category_name": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "total_rented": {
+                    "type": "integer"
+                },
+                "total_revenue": {
+                    "type": "number"
                 }
             }
         },
