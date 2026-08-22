@@ -1,0 +1,3619 @@
+basePath: /api
+definitions:
+  controllers.LoginDTO:
+    properties:
+      password:
+        example: password123
+        type: string
+      username:
+        example: admin
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  helpers.APIResponse:
+    properties:
+      data: {}
+      errors: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.BookingItemDTO:
+    properties:
+      product_unit_id:
+        type: integer
+    required:
+    - product_unit_id
+    type: object
+  models.Brand:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.BrandCreateDTO:
+    properties:
+      description:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.BrandUpdateDTO:
+    properties:
+      description:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+    type: object
+  models.Category:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.CategoryCreateDTO:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.CategoryUpdateDTO:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  models.Customer:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      email:
+        type: string
+      emergency_contact:
+        type: string
+      id:
+        type: integer
+      identity_number:
+        type: string
+      identity_photo_url:
+        type: string
+      identity_type:
+        type: string
+      is_blacklisted:
+        type: boolean
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      name:
+        type: string
+      notes:
+        type: string
+      phone:
+        type: string
+    type: object
+  models.Maintenance:
+    properties:
+      completed_date:
+        type: string
+      cost:
+        type: number
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      id:
+        type: integer
+      issue_description:
+        type: string
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      product_unit_id:
+        type: integer
+      start_date:
+        type: string
+      status:
+        description: in_progress, completed
+        type: string
+      unit_code:
+        type: string
+    type: object
+  models.MaintenanceCreateDTO:
+    properties:
+      cost:
+        type: number
+      issue_description:
+        type: string
+      product_unit_id:
+        type: integer
+      start_date:
+        description: "2006-01-02"
+        type: string
+    required:
+    - issue_description
+    - product_unit_id
+    - start_date
+    type: object
+  models.MaintenanceUpdateDTO:
+    properties:
+      cost:
+        type: number
+      issue_description:
+        type: string
+      start_date:
+        type: string
+      status:
+        type: string
+    type: object
+  models.Payment:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      id:
+        type: integer
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      notes:
+        type: string
+      paid_at:
+        type: string
+      payment_method:
+        type: string
+      payment_type:
+        description: down_payment, full_payment, deposit_in, deposit_refund, penalty_charge
+        type: string
+      reference_number:
+        type: string
+      rental_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  models.PaymentCreateDTO:
+    properties:
+      amount:
+        type: number
+      notes:
+        type: string
+      payment_method:
+        type: string
+      payment_type:
+        type: string
+      reference_number:
+        type: string
+      rental_id:
+        type: integer
+    required:
+    - amount
+    - payment_method
+    - payment_type
+    - rental_id
+    type: object
+  models.PaymentUpdateDTO:
+    properties:
+      amount:
+        type: number
+      notes:
+        type: string
+      payment_method:
+        type: string
+      payment_type:
+        type: string
+      reference_number:
+        type: string
+    type: object
+  models.Product:
+    properties:
+      brand_id:
+        type: integer
+      brand_name:
+        type: string
+      category_id:
+        type: integer
+      category_name:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      default_deposit:
+        type: number
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      late_fee_per_day:
+        type: number
+      lost_compensation_fee:
+        type: number
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      name:
+        type: string
+      rental_price_per_day:
+        type: number
+    type: object
+  models.ProductCreateDTO:
+    properties:
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      default_deposit:
+        type: number
+      is_active:
+        type: boolean
+      late_fee_per_day:
+        type: number
+      lost_compensation_fee:
+        type: number
+      name:
+        type: string
+      rental_price_per_day:
+        type: number
+    required:
+    - brand_id
+    - category_id
+    - late_fee_per_day
+    - lost_compensation_fee
+    - name
+    - rental_price_per_day
+    type: object
+  models.ProductUnit:
+    properties:
+      condition:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      id:
+        type: integer
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      notes:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      serial_number:
+        type: string
+      status:
+        description: available, booked, rented, maintenance, lost
+        type: string
+      unit_code:
+        type: string
+    type: object
+  models.ProductUnitCreateDTO:
+    properties:
+      condition:
+        type: string
+      notes:
+        type: string
+      product_id:
+        type: integer
+      serial_number:
+        type: string
+      unit_code:
+        type: string
+    required:
+    - product_id
+    - unit_code
+    type: object
+  models.ProductUnitUpdateDTO:
+    properties:
+      condition:
+        type: string
+      notes:
+        type: string
+      product_id:
+        type: integer
+      serial_number:
+        type: string
+      status:
+        type: string
+      unit_code:
+        type: string
+    type: object
+  models.ProductUpdateDTO:
+    properties:
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      default_deposit:
+        type: number
+      is_active:
+        type: boolean
+      late_fee_per_day:
+        type: number
+      lost_compensation_fee:
+        type: number
+      name:
+        type: string
+      rental_price_per_day:
+        type: number
+    type: object
+  models.Rental:
+    properties:
+      actual_return_date:
+        type: string
+      booking_date:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      customer_id:
+        type: integer
+      customer_name:
+        type: string
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      expected_return_date:
+        type: string
+      grand_total:
+        type: number
+      id:
+        type: integer
+      invoice_number:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.RentalItem'
+        type: array
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      start_date:
+        type: string
+      status:
+        description: booked, active, returned, completed, cancelled
+        type: string
+      total_deposit:
+        type: number
+      total_penalty_fee:
+        type: number
+      total_rental_fee:
+        type: number
+      user_id:
+        type: integer
+      user_name:
+        type: string
+    type: object
+  models.RentalBookingDTO:
+    properties:
+      customer_id:
+        type: integer
+      down_payment:
+        type: number
+      expected_return_date:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.BookingItemDTO'
+        minItems: 1
+        type: array
+      payment_method:
+        type: string
+      start_date:
+        description: 'Format: 2006-01-02 15:04:05'
+        type: string
+    required:
+    - customer_id
+    - expected_return_date
+    - items
+    - start_date
+    type: object
+  models.RentalItem:
+    properties:
+      condition_in:
+        type: string
+      condition_out:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      daily_rate:
+        type: number
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      duration_days:
+        type: integer
+      id:
+        type: integer
+      item_penalty_fee:
+        type: number
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      product_name:
+        type: string
+      product_unit_id:
+        type: integer
+      rental_id:
+        type: integer
+      return_notes:
+        type: string
+      subtotal:
+        type: number
+      unit_code:
+        type: string
+    type: object
+  models.RentalReturnDTO:
+    properties:
+      actual_return_date:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.ReturnItemConditionDTO'
+        minItems: 1
+        type: array
+    required:
+    - actual_return_date
+    - items
+    type: object
+  models.RentalSettlementDTO:
+    properties:
+      notes:
+        type: string
+      payment_method:
+        type: string
+    required:
+    - payment_method
+    type: object
+  models.RentalUpdateDTO:
+    properties:
+      expected_return_date:
+        type: string
+      grand_total:
+        type: number
+      start_date:
+        type: string
+      status:
+        type: string
+      total_deposit:
+        type: number
+      total_penalty_fee:
+        type: number
+      total_rental_fee:
+        type: number
+    type: object
+  models.ReturnItemConditionDTO:
+    properties:
+      condition_in:
+        description: good, damaged, lost
+        type: string
+      item_penalty_fee:
+        type: number
+      rental_item_id:
+        type: integer
+      return_notes:
+        type: string
+    required:
+    - condition_in
+    - rental_item_id
+    type: object
+  models.Role:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.RoleCreateDTO:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.RoleUpdateDTO:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      deleted_by:
+        type: integer
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      modified_at:
+        type: string
+      modified_by:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      role_id:
+        type: integer
+      role_name:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserCreateDTO:
+    properties:
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+      role_id:
+        type: integer
+      username:
+        type: string
+    required:
+    - name
+    - password
+    - role_id
+    - username
+    type: object
+  models.UserUpdateDTO:
+    properties:
+      is_active:
+        type: boolean
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      role_id:
+        type: integer
+      username:
+        type: string
+    type: object
+info:
+  contact:
+    email: developer.haritsnb@gmail.com
+    name: Harits Nala Barrun
+  description: Backend RESTful API Sistem Kasir & Manajemen Rental Alat Camping menggunakan
+    Golang + Gin + PostgreSQL + JWT Blacklist + KYC Upload.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Outdoor Gear Rental POS API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Autentikasi kredensial pengguna dan mengembalikan Bearer JWT Token
+      parameters:
+      - description: Payload Kredensial Login
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login Berhasil
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  properties:
+                    token:
+                      type: string
+                    user:
+                      $ref: '#/definitions/models.User'
+                  type: object
+              type: object
+        "400":
+          description: Bad Request / Unauthorized
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Unauthorized
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      summary: Login User
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      description: Revoke token JWT aktif pengguna saat ini dan memasukkannya ke tabel
+        blacklist
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout Berhasil
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Unauthorized / Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Unauthorized / Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout User
+      tags:
+      - Auth
+  /auth/me:
+    get:
+      description: Memuat data profil pengguna yang sedang login berdasarkan klaim
+        token JWT
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profil Ditemukan
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.User'
+              type: object
+        "401":
+          description: Unauthorized / Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Unauthorized / Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Profile Pengguna
+      tags:
+      - Auth
+  /brands:
+    get:
+      description: Memuat seluruh brand peralatan outdoor yang terdaftar
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Brand'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Brands
+      tags:
+      - Brands
+    post:
+      consumes:
+      - application/json
+      description: Menambahkan brand outdoor baru ke katalog (Admin/Staff Only)
+      parameters:
+      - description: Payload Brand
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BrandCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Brand'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Tambah Brand Baru
+      tags:
+      - Brands
+  /brands/{id}:
+    delete:
+      description: Menonaktifkan data brand (Admin Only)
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Brand
+      tags:
+      - Brands
+    get:
+      description: Memuat rincian informasi brand berdasarkan ID
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Brand'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Brand Berdasarkan ID
+      tags:
+      - Brands
+    post:
+      description: Memulihkan kembali brand yang berstatus soft-deleted (Admin Only)
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Brand
+      tags:
+      - Brands
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui nama, deskripsi, atau status aktif brand (Admin/Staff
+        Only)
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Brand
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BrandUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Brand (Flexible Partial)
+      tags:
+      - Brands
+  /brands/{id}/force:
+    delete:
+      description: Menghapus fisik data brand secara permanen dari database (Admin
+        Only)
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Brand (Force Delete)
+      tags:
+      - Brands
+  /categories:
+    get:
+      description: Mengambil seluruh data kategori produk alat camping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Category'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Kategori
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      description: Menambahkan kategori perlengkapan camping baru (Admin/Staff Only)
+      parameters:
+      - description: Payload Kategori
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CategoryCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Category'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Tambah Kategori Baru
+      tags:
+      - Categories
+  /categories/{id}:
+    delete:
+      description: Menonaktifkan kategori produk (Admin Only)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Kategori
+      tags:
+      - Categories
+    get:
+      description: Mengambil rincian informasi kategori berdasarkan ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Category'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Kategori Berdasarkan ID
+      tags:
+      - Categories
+    post:
+      description: Memulihkan kembali kategori yang berstatus soft-deleted (Admin
+        Only)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Kategori
+      tags:
+      - Categories
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui nama atau deskripsi kategori (Admin/Staff Only)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Kategori
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CategoryUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Kategori (Flexible Partial)
+      tags:
+      - Categories
+  /categories/{id}/force:
+    delete:
+      description: Menghapus fisik data kategori secara permanen dari database (Admin
+        Only)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Kategori (Force Delete)
+      tags:
+      - Categories
+  /customers:
+    get:
+      description: Memuat seluruh daftar pelanggan terdaftar beserta status KYC dan
+        blacklist
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Customer'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Pelanggan
+      tags:
+      - Customers
+    post:
+      consumes:
+      - multipart/form-data
+      description: Mendaftarkan data pelanggan baru dan mengunggah foto kartu identitas
+        (KTP/SIM/Paspor)
+      parameters:
+      - description: Nama Lengkap
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Tipe Identitas (KTP/SIM/Paspor)
+        in: formData
+        name: identity_type
+        required: true
+        type: string
+      - description: Nomor Unik Identitas
+        in: formData
+        name: identity_number
+        required: true
+        type: string
+      - description: Nomor HP / WA Aktif
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: Alamat Domisili
+        in: formData
+        name: address
+        required: true
+        type: string
+      - description: Kontak Darurat
+        in: formData
+        name: emergency_contact
+        type: string
+      - description: Email Pelanggan
+        in: formData
+        name: email
+        type: string
+      - description: Catatan Tambahan
+        in: formData
+        name: notes
+        type: string
+      - description: Foto Fisik Kartu Identitas
+        in: formData
+        name: identity_photo
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Customer'
+              type: object
+        "400":
+          description: Bad Request / Upload Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Upload Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request / Upload Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Registrasi Pelanggan & Upload KYC
+      tags:
+      - Customers
+  /customers/{id}:
+    delete:
+      description: Menonaktifkan data pelanggan (Admin Only)
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Pelanggan
+      tags:
+      - Customers
+    get:
+      description: Memuat data lengkap pelanggan dan URL foto identitasnya
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Customer'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Pelanggan Berdasarkan ID
+      tags:
+      - Customers
+    post:
+      description: Memulihkan kembali data pelanggan yang berstatus soft-deleted (Admin
+        Only)
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Pelanggan
+      tags:
+      - Customers
+    put:
+      consumes:
+      - multipart/form-data
+      - application/json
+      description: Memperbarui biodata pelanggan dan opsional mengganti file foto
+        kartu identitas
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Nama Lengkap
+        in: formData
+        name: name
+        type: string
+      - description: Tipe Identitas
+        in: formData
+        name: identity_type
+        type: string
+      - description: Nomor Identitas
+        in: formData
+        name: identity_number
+        type: string
+      - description: Nomor HP
+        in: formData
+        name: phone
+        type: string
+      - description: Alamat
+        in: formData
+        name: address
+        type: string
+      - description: Kontak Darurat
+        in: formData
+        name: emergency_contact
+        type: string
+      - description: Email
+        in: formData
+        name: email
+        type: string
+      - description: Catatan
+        in: formData
+        name: notes
+        type: string
+      - description: Foto Identitas Baru
+        in: formData
+        name: identity_photo
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Pelanggan (Flexible Partial + Opsional Foto)
+      tags:
+      - Customers
+  /customers/{id}/blacklist:
+    patch:
+      consumes:
+      - application/json
+      description: Memasukkan atau menghapus pelanggan dari daftar blacklist (Admin
+        Only)
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Blacklist
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            is_blacklisted:
+              type: boolean
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Ubah Status Blacklist Pelanggan
+      tags:
+      - Customers
+  /customers/{id}/force:
+    delete:
+      description: Menghapus fisik data pelanggan dari database (Admin Only)
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Pelanggan (Force Delete)
+      tags:
+      - Customers
+  /maintenance:
+    get:
+      description: Memuat seluruh tiket servis dan perbaikan alat camping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Maintenance'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Servis/Maintenance
+      tags:
+      - Maintenance
+    post:
+      consumes:
+      - application/json
+      description: Mendaftarkan unit rusak ke modul servis dan mengubah status unit
+        fisik menjadi 'maintenance' (Admin/Staff Only)
+      parameters:
+      - description: Payload Maintenance
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MaintenanceCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Maintenance'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Input Tiket Servis Manual
+      tags:
+      - Maintenance
+  /maintenance/{id}:
+    delete:
+      description: Menonaktifkan catatan tiket pemeliharaan (Admin Only)
+      parameters:
+      - description: Maintenance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Tiket Servis
+      tags:
+      - Maintenance
+    get:
+      description: Memuat rincian tiket perbaikan alat dan status pengerjaannya
+      parameters:
+      - description: Maintenance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Maintenance'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Servis Berdasarkan ID
+      tags:
+      - Maintenance
+    post:
+      description: Memulihkan kembali tiket servis yang berstatus soft-deleted (Admin
+        Only)
+      parameters:
+      - description: Maintenance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Tiket Servis
+      tags:
+      - Maintenance
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui deskripsi kerusakan, estimasi biaya, atau tanggal mulai
+        servis (Admin/Staff Only)
+      parameters:
+      - description: Maintenance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Maintenance
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MaintenanceUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Tiket Servis (Flexible Partial)
+      tags:
+      - Maintenance
+  /maintenance/{id}/complete:
+    patch:
+      description: Menyelesaikan tiket servis dan secara otomatis mengembalikan status
+        unit fisik menjadi 'available' (Admin/Staff Only)
+      parameters:
+      - description: Maintenance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Selesaikan Perbaikan Unit
+      tags:
+      - Maintenance
+  /maintenance/{id}/force:
+    delete:
+      description: Menghapus fisik data tiket servis secara permanen dari database
+        (Admin Only)
+      parameters:
+      - description: Maintenance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Tiket Servis (Force Delete)
+      tags:
+      - Maintenance
+  /payments:
+    post:
+      consumes:
+      - application/json
+      description: Mencatat pembayaran tambahan/pelunasan manual untuk rental tertentu
+      parameters:
+      - description: Payload Pembayaran
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.PaymentCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Payment'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Catat Pembayaran Manual
+      tags:
+      - Payments
+  /payments/{id}:
+    delete:
+      description: Menonaktifkan data pembayaran (Admin Only)
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Pembayaran
+      tags:
+      - Payments
+    get:
+      description: Memuat detail satu bukti transaksi pembayaran
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Payment'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Pembayaran Berdasarkan ID
+      tags:
+      - Payments
+    post:
+      description: Memulihkan kembali data pembayaran yang berstatus soft-deleted
+        (Admin Only)
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Pembayaran
+      tags:
+      - Payments
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui nominal, metode, atau nomor referensi pembayaran (Admin
+        Only)
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Pembayaran
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.PaymentUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Pembayaran (Flexible Partial)
+      tags:
+      - Payments
+  /payments/{id}/force:
+    delete:
+      description: Menghapus fisik data pembayaran secara permanen dari database (Admin
+        Only)
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Pembayaran (Force Delete)
+      tags:
+      - Payments
+  /payments/rental/{rental_id}:
+    get:
+      description: Memuat seluruh log pembayaran transaksi sewa (DP, pelunasan, deposit,
+        refund, denda)
+      parameters:
+      - description: Rental ID
+        in: path
+        name: rental_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Payment'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Histori Pembayaran Berdasarkan Rental ID
+      tags:
+      - Payments
+  /product-units:
+    get:
+      description: Memuat seluruh unit fisik produk yang memiliki kode barcode/QR
+        dan serial number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.ProductUnit'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Unit Fisik
+      tags:
+      - Product Units
+    post:
+      consumes:
+      - application/json
+      description: Mendaftarkan unit fisik serialized dengan kode unik dan nomor seri
+        (Admin/Staff Only)
+      parameters:
+      - description: Payload Unit Fisik
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductUnitCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ProductUnit'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Tambah Unit Fisik Baru
+      tags:
+      - Product Units
+  /product-units/{id}:
+    delete:
+      description: Menonaktifkan unit fisik dari daftar inventaris (Admin Only)
+      parameters:
+      - description: Product Unit ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Unit Fisik
+      tags:
+      - Product Units
+    get:
+      description: Memuat detail unit fisik, riwayat kondisi, dan status ketersediaannya
+      parameters:
+      - description: Product Unit ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ProductUnit'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Unit Fisik Berdasarkan ID
+      tags:
+      - Product Units
+    post:
+      description: Memulihkan kembali unit fisik yang berstatus soft-deleted (Admin
+        Only)
+      parameters:
+      - description: Product Unit ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Unit Fisik
+      tags:
+      - Product Units
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui nomor seri, kondisi, status, atau catatan unit fisik
+        (Admin/Staff Only)
+      parameters:
+      - description: Product Unit ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Unit Fisik
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductUnitUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Unit Fisik (Flexible Partial)
+      tags:
+      - Product Units
+  /product-units/{id}/force:
+    delete:
+      description: Menghapus fisik data unit dari database (Admin Only)
+      parameters:
+      - description: Product Unit ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Unit Fisik (Force Delete)
+      tags:
+      - Product Units
+  /product-units/scan/{unit_code}:
+    get:
+      description: Memindai kode barcode unik unit fisik saat transaksi checkout atau
+        serah terima alat
+      parameters:
+      - description: 'Unit Code Barcode (Contoh: TND-EIG-001)'
+        in: path
+        name: unit_code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ProductUnit'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Scan Barcode / QR Code Unit Fisik
+      tags:
+      - Product Units
+  /products:
+    get:
+      description: Memuat seluruh katalog produk perlengkapan camping beserta tarif
+        harian, deposit, dan denda
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Product'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Katalog Produk
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Mendaftarkan produk sewa baru ke katalog sistem (Admin/Staff Only)
+      parameters:
+      - description: Payload Produk
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Tambah Produk Baru
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      description: Menonaktifkan produk dari katalog sewa (Admin Only)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Produk
+      tags:
+      - Products
+    get:
+      description: Memuat rincian informasi dan tarif produk sewa
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Product'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Produk Berdasarkan ID
+      tags:
+      - Products
+    post:
+      description: Memulihkan kembali produk yang berstatus soft-deleted (Admin Only)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Produk
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui harga sewa, denda, deposit, atau kategori produk secara
+        fleksibel (Admin/Staff Only)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Produk
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Produk (Flexible Partial)
+      tags:
+      - Products
+  /products/{id}/force:
+    delete:
+      description: Menghapus fisik data produk secara permanen dari database (Admin
+        Only)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Produk (Force Delete)
+      tags:
+      - Products
+  /rentals:
+    get:
+      description: Memuat daftar transaksi sewa alat camping dengan filter status
+        opsional (?status=booked/active/returned/completed/cancelled)
+      parameters:
+      - description: Filter Status Transaksi
+        enum:
+        - booked
+        - active
+        - returned
+        - completed
+        - cancelled
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Rental'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Transaksi Rental
+      tags:
+      - Rentals
+  /rentals/{id}:
+    delete:
+      description: Menonaktifkan transaksi rental dan riwayat rental itemnya (Admin
+        Only)
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Transaksi Rental
+      tags:
+      - Rentals
+    get:
+      description: Memuat rincian transaksi invoice sewa beserta rincian item unit
+        fisik yang disewa
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Rental'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Invoice Rental
+      tags:
+      - Rentals
+    post:
+      description: Memulihkan kembali transaksi rental dan rental item yang berstatus
+        soft-deleted (Admin Only)
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Transaksi Rental
+      tags:
+      - Rentals
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui tanggal, total biaya, atau status transaksi rental
+        secara fleksibel (Admin Only)
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Rental
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RentalUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Transaksi Rental (Flexible Partial)
+      tags:
+      - Rentals
+  /rentals/{id}/cancel:
+    post:
+      description: Membatalkan pesanan booking yang belum diserahterimakan dan mengembalikan
+        status unit fisik menjadi available
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Batalkan Booking Sewa
+      tags:
+      - Rentals
+  /rentals/{id}/force:
+    delete:
+      description: Menghapus fisik data transaksi rental beserta itemnya secara permanen
+        dari database (Admin Only)
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Rental (Force Delete)
+      tags:
+      - Rentals
+  /rentals/{id}/handover:
+    post:
+      description: Menyerahkan unit alat ke pelanggan saat pengambilan. Status sewa
+        menjadi 'active' dan unit fisik menjadi 'rented'
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Handover Alat Fisik (Fase 2)
+      tags:
+      - Rentals
+  /rentals/{id}/return:
+    post:
+      consumes:
+      - application/json
+      description: Mencatat pengembalian alat aktual, menghitung denda telat otomatis,
+        dan mengevaluasi denda kerusakan fisik tiap unit
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Kondisi Fisik Unit Kembali
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RentalReturnDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Rental'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Pengembalian Alat & Cek Denda (Fase 3)
+      tags:
+      - Rentals
+  /rentals/{id}/settlement:
+    post:
+      consumes:
+      - application/json
+      description: Menyelesaikan transaksi sewa, refund sisa deposit atau tagih denda,
+        dan mengupdate status unit fisik (available / maintenance)
+      parameters:
+      - description: Rental ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Metode Penyelesaian
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RentalSettlementDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Settlement & Rekonsiliasi Deposit (Fase 4)
+      tags:
+      - Rentals
+  /rentals/booking:
+    post:
+      consumes:
+      - application/json
+      description: Membuat pesanan sewa baru, mengunci unit fisik, menghitung durasi
+        hari, deposit, dan mencatat DP
+      parameters:
+      - description: Payload Booking Sewa
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RentalBookingDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Rental'
+              type: object
+        "400":
+          description: Bad Request / Blacklisted Customer / Unit Unavailable
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Blacklisted Customer / Unit Unavailable
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Bad Request / Blacklisted Customer / Unit Unavailable
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Booking Sewa Alat (Fase 1)
+      tags:
+      - Rentals
+  /roles:
+    get:
+      description: Mengambil seluruh data roles yang aktif (Admin Only)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Role'
+                  type: array
+              type: object
+        "401":
+          description: Error Otorisasi / Server
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Error Otorisasi / Server
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error Otorisasi / Server
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Roles
+      tags:
+      - Roles
+    post:
+      consumes:
+      - application/json
+      description: Membuat role baru dalam sistem (Admin Only)
+      parameters:
+      - description: Payload Role
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RoleCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Role'
+              type: object
+        "400":
+          description: Bad Request / Forbidden
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Forbidden
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Forbidden
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Tambah Role Baru
+      tags:
+      - Roles
+  /roles/{id}:
+    delete:
+      description: Menonaktifkan role ke status terhapus sementara (Admin Only)
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete Role
+      tags:
+      - Roles
+    get:
+      description: Mengambil data detail role berdasarkan parameter ID (Admin Only)
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Role'
+              type: object
+        "401":
+          description: Not Found / Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Not Found / Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found / Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail Role Berdasarkan ID
+      tags:
+      - Roles
+    post:
+      description: Memulihkan kembali role yang berstatus soft-deleted (Admin Only)
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore Role
+      tags:
+      - Roles
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui data nama/deskripsi role secara parsial (Admin Only)
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update Role
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RoleUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Role (Flexible Partial)
+      tags:
+      - Roles
+  /roles/{id}/force:
+    delete:
+      description: Menghapus fisik data role secara permanen dari database (Admin
+        Only)
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Constraint
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Constraint
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Constraint
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent Role (Force Delete)
+      tags:
+      - Roles
+  /users:
+    get:
+      description: Mengambil seluruh data user akun operasional toko (Admin Only)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.User'
+                  type: array
+              type: object
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar Semua Pengguna
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Mendaftarkan akun user baru (Kasir/Staff/Admin) beserta enkripsi
+        bcrypt password (Admin Only)
+      parameters:
+      - description: Payload Registrasi User
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Tambah Akun User Baru
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      description: Menonaktifkan akun user ke status terhapus sementara (Admin Only)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Soft Delete User
+      tags:
+      - Users
+    get:
+      description: Mengambil data detail akun user berdasarkan ID (Admin Only)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.User'
+              type: object
+        "401":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Detail User Berdasarkan ID
+      tags:
+      - Users
+    post:
+      description: Memulihkan kembali akun user yang berstatus soft-deleted (Admin
+        Only)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Restore User
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui data profil, role, username, password, atau status
+        aktif user secara fleksibel (Admin Only)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payload Update User
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update User (Flexible Partial)
+      tags:
+      - Users
+  /users/{id}/force:
+    delete:
+      description: Menghapus fisik data akun user secara permanen dari database (Admin
+        Only)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "400":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "401":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+        "403":
+          description: Bad Request / Foreign Key Error
+          schema:
+            $ref: '#/definitions/helpers.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Permanent User (Force Delete)
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: 'Masukkan token dengan format: Bearer <token_jwt>'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

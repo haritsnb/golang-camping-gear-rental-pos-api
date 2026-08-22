@@ -18,6 +18,15 @@ func NewUserController(s services.UserService) *UserController {
 	return &UserController{service: s}
 }
 
+// GetAll godoc
+// @Summary      Daftar Semua Pengguna
+// @Description  Mengambil seluruh data user akun operasional toko (Admin Only)
+// @Tags         Users
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.User} "Sukses"
+// @Failure      401,403,500 {object} helpers.APIResponse "Error"
+// @Router       /users [get]
 func (ctl *UserController) GetAll(c *gin.Context) {
 	users, err := ctl.service.GetAll(c.Request.Context())
 	if err != nil {
@@ -27,6 +36,16 @@ func (ctl *UserController) GetAll(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Daftar user berhasil dimuat", users)
 }
 
+// GetByID godoc
+// @Summary      Detail User Berdasarkan ID
+// @Description  Mengambil data detail akun user berdasarkan ID (Admin Only)
+// @Tags         Users
+// @Security     BearerAuth
+// @Produce      json
+// @Param        id path int true "User ID"
+// @Success      200 {object} helpers.APIResponse{data=models.User} "Sukses"
+// @Failure      401,403,404 {object} helpers.APIResponse "Not Found"
+// @Router       /users/{id} [get]
 func (ctl *UserController) GetByID(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, err := ctl.service.GetByID(c.Request.Context(), id)
@@ -37,6 +56,17 @@ func (ctl *UserController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail user ditemukan", user)
 }
 
+// Create godoc
+// @Summary      Tambah Akun User Baru
+// @Description  Mendaftarkan akun user baru (Kasir/Staff/Admin) beserta enkripsi bcrypt password (Admin Only)
+// @Tags         Users
+// @Security     BearerAuth
+// @Accept       json
+// @Produce      json
+// @Param        request body models.UserCreateDTO true "Payload Registrasi User"
+// @Success      201 {object} helpers.APIResponse{data=models.User} "Created"
+// @Failure      400,401,403 {object} helpers.APIResponse "Bad Request"
+// @Router       /users [post]
 func (ctl *UserController) Create(c *gin.Context) {
 	var req models.UserCreateDTO
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -53,6 +83,18 @@ func (ctl *UserController) Create(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusCreated, "User berhasil didaftarkan", createdUser)
 }
 
+// Update godoc
+// @Summary      Update User (Flexible Partial)
+// @Description  Memperbarui data profil, role, username, password, atau status aktif user secara fleksibel (Admin Only)
+// @Tags         Users
+// @Security     BearerAuth
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "User ID"
+// @Param        request body models.UserUpdateDTO true "Payload Update User"
+// @Success      200 {object} helpers.APIResponse "Sukses"
+// @Failure      400,401,403 {object} helpers.APIResponse "Bad Request"
+// @Router       /users/{id} [put]
 func (ctl *UserController) Update(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	var req models.UserUpdateDTO
@@ -69,6 +111,16 @@ func (ctl *UserController) Update(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "User berhasil diperbarui", nil)
 }
 
+// Delete godoc
+// @Summary      Soft Delete User
+// @Description  Menonaktifkan akun user ke status terhapus sementara (Admin Only)
+// @Tags         Users
+// @Security     BearerAuth
+// @Produce      json
+// @Param        id path int true "User ID"
+// @Success      200 {object} helpers.APIResponse "Sukses"
+// @Failure      400,401,403 {object} helpers.APIResponse "Bad Request"
+// @Router       /users/{id} [delete]
 func (ctl *UserController) Delete(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	userID := c.GetInt("user_id")
@@ -80,6 +132,16 @@ func (ctl *UserController) Delete(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "User berhasil dihapus (soft delete)", nil)
 }
 
+// Restore godoc
+// @Summary      Restore User
+// @Description  Memulihkan kembali akun user yang berstatus soft-deleted (Admin Only)
+// @Tags         Users
+// @Security     BearerAuth
+// @Produce      json
+// @Param        id path int true "User ID"
+// @Success      200 {object} helpers.APIResponse "Sukses"
+// @Failure      400,401,403 {object} helpers.APIResponse "Bad Request"
+// @Router       /users/{id} [post]
 func (ctl *UserController) Restore(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	userID := c.GetInt("user_id")
@@ -91,6 +153,16 @@ func (ctl *UserController) Restore(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "User berhasil dipulihkan (restore)", nil)
 }
 
+// ForceDelete godoc
+// @Summary      Delete Permanent User (Force Delete)
+// @Description  Menghapus fisik data akun user secara permanen dari database (Admin Only)
+// @Tags         Users
+// @Security     BearerAuth
+// @Produce      json
+// @Param        id path int true "User ID"
+// @Success      200 {object} helpers.APIResponse "Sukses"
+// @Failure      400,401,403 {object} helpers.APIResponse "Bad Request / Foreign Key Error"
+// @Router       /users/{id}/force [delete]
 func (ctl *UserController) ForceDelete(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	userID := c.GetInt("user_id")

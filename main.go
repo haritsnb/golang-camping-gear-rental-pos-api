@@ -3,6 +3,8 @@ package main
 import (
 	"app/config"
 	"app/controllers"
+	"app/docs"
+	_ "app/docs"
 	"app/middlewares"
 	"app/repositories"
 	"app/services"
@@ -11,7 +13,27 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+// @title           Outdoor Gear Rental POS API
+// @version         1.0
+// @description     Backend RESTful API Sistem Kasir & Manajemen Rental Alat Camping menggunakan Golang + Gin + PostgreSQL + JWT Blacklist + KYC Upload.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name    Harits Nala Barrun
+// @contact.email   developer.haritsnb@gmail.com
+
+// @license.name    Apache 2.0
+// @license.url     http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @BasePath        /api
+
+// @securityDefinitions.apikey BearerAuth
+// @in              header
+// @name            Authorization
+// @description     Masukkan token dengan format: Bearer <token_jwt>
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -20,6 +42,11 @@ func init() {
 }
 
 func main() {
+	// Set host dinamis agar bisa berjalan di localhost maupun server produksi
+	docs.SwaggerInfo.Host = ""
+	docs.SwaggerInfo.BasePath = "/api"
+
+	// DATABASE
 	db := config.Database()
 	defer db.Close()
 
@@ -68,8 +95,10 @@ func main() {
 	// Static route untuk melayani file upload foto KYC
 	router.Static("/storages", "./storages")
 
-	api := router.Group("/api/v1")
+	api := router.Group("/api")
 	{
+		api.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 		authGroup := api.Group("/auth")
 		{
 			authGroup.POST("/login", authController.Login)
