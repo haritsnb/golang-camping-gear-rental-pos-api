@@ -95,6 +95,9 @@ func main() {
 
 	router := gin.Default()
 
+	// Static route untuk melayani file di folder test:
+	router.Static("/test", "./test")
+
 	// Static route untuk melayani file upload foto KYC
 	router.Static("/storages", "./storages")
 

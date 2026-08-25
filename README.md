@@ -3,6 +3,7 @@
 
 Backend API untuk sistem kasir dan manajemen penyewaan perlengkapan camping. Aplikasi ini dirancang untuk membantu pengelolaan data alat, stok, pelanggan, transaksi penyewaan, pengembalian barang, pembayaran, serta manajemen pengguna dan hak akses.
 
+
 ## A. Panduan Setup & Menjalankan Project
 
 ### 1. Clone Repository
@@ -31,6 +32,7 @@ Jalankan perintah berikut untuk meng-generate dokumentasi Swagger dan menyalakan
 ```bash
 go run main.go
 ```
+
 
 ## B. Dokumentasi Swagger UI
 
@@ -65,3 +67,10 @@ _*sesuaikan host dan port_
      ```
    - Klik tombol **Authorize** --> klik **Close**.
    - Icon gembok akan berubah menjadi terkunci **🔒**.
+
+
+## C. API Tester & Simulator
+Simulasi pengujian dari sisi `client-side` dapat diakses melalui:
+```url
+http://localhost:8081/test
+```
