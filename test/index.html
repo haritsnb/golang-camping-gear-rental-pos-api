@@ -275,6 +275,12 @@
   <!-- REUSABLE JAVASCRIPT APP ENGINE -->
   <!-- ======================================================== -->
   <script>
+    // Global Scope Helper untuk Menutup Modal
+    function closeModal(id = 'appModal') {
+      $("#" + id).addClass("hidden");
+    }
+    window.closeModal = closeModal;
+
     const App = {
       baseUrl: localStorage.getItem("api_base_url") || `${window.location.origin}/api`,
       token: localStorage.getItem("jwt_token") || "",
@@ -500,7 +506,7 @@
 
       loadProducts() {
         const isTrashProd = this.trash['products'], isTrashUnit = this.trash['product-units'];
-        // Produk
+        // Produk Master
         this.req("GET", isTrashProd ? '/products/deleted' : '/products').done(res => {
           let rows = (res.data || []).map(p => `
             <tr class="hover:bg-slate-50 ${isTrashProd ? 'bg-rose-50/40':''}">
@@ -512,7 +518,7 @@
           `).join("");
           $("#productTableBody").html(rows || `<tr><td colspan="8" class="p-3 text-center text-slate-400">Tidak ada data</td></tr>`);
         });
-        // Unit
+        // Unit Fisik
         this.req("GET", isTrashUnit ? '/product-units/deleted' : '/product-units').done(res => {
           let rows = (res.data || []).map(u => `
             <tr class="hover:bg-slate-50 ${isTrashUnit ? 'bg-rose-50/40':''}">
@@ -714,7 +720,7 @@
         });
       },
 
-      // GENERIC MODAL DISPATCHER FOR ALL OTHER ENTITIES
+      // GENERIC MODAL DISPATCHER
       openEdit(resource, id) {
         if (resource === 'customers') this.openCustomerModal(id);
         else if (resource === 'products') this.openProductModal(id);
