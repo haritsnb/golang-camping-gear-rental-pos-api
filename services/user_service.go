@@ -13,6 +13,7 @@ import (
 type UserService interface {
 	GetAll(ctx context.Context) ([]models.User, error)
 	GetByID(ctx context.Context, id int) (*models.User, error)
+	GetDeleted(ctx context.Context) ([]models.User, error)
 	Create(ctx context.Context, req models.UserCreateDTO, currentUserID int) (*models.User, error)
 	Update(ctx context.Context, id int, req models.UserUpdateDTO, currentUserID int) error
 	Delete(ctx context.Context, id, currentUserID int) error
@@ -41,6 +42,10 @@ func (s *userService) GetByID(ctx context.Context, id int) (*models.User, error)
 		return nil, err
 	}
 	return user, nil
+}
+
+func (s *userService) GetDeleted(ctx context.Context) ([]models.User, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *userService) Create(ctx context.Context, req models.UserCreateDTO, currentUserID int) (*models.User, error) {

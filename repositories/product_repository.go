@@ -9,6 +9,7 @@ import (
 type ProductRepository interface {
 	GetAll(ctx context.Context) ([]models.Product, error)
 	GetByID(ctx context.Context, id int) (*models.Product, error)
+	GetDeleted(ctx context.Context) ([]models.Product, error)
 	Create(ctx context.Context, p *models.Product) error
 	Update(ctx context.Context, id int, req models.ProductUpdateDTO, modifiedBy int) error
 	Delete(ctx context.Context, id, deletedBy int) error
@@ -87,6 +88,29 @@ func (r *productRepo) GetByID(ctx context.Context, id int) (*models.Product, err
 		&p.CreatedAt, &p.ModifiedAt,
 	)
 	return p, err
+}
+
+func (r *productRepo) GetDeleted(ctx context.Context) ([]models.Product, error) {
+	query := `
+		SELECT p.id, p.category_id, c.name, p.brand_id, b.name, p.name, p.rental_price_per_day, p.default_deposit, p.late_fee_per_day, p.lost_compensation_fee, p.is_active, 0, 0, 0, 0, p.created_at, p.modified_at, p.deleted_at
+		FROM products p
+		JOIN categories c ON c.id = p.category_id
+		JOIN brands b ON b.id = p.brand_id
+		WHERE p.deleted_at IS NOT NULL ORDER BY p.deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Product
+	for rows.Next() {
+		var p models.Product
+		if err := rows.Scan(&p.ID, &p.CategoryID, &p.CategoryName, &p.BrandID, &p.BrandName, &p.Name, &p.RentalPricePerDay, &p.DefaultDeposit, &p.LateFeePerDay, &p.LostCompensationFee, &p.IsActive, &p.TotalUnits, &p.AvailableUnits, &p.RentedUnits, &p.MaintenanceUnits, &p.CreatedAt, &p.ModifiedAt, &p.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, p)
+	}
+	return list, nil
 }
 
 func (r *productRepo) Create(ctx context.Context, p *models.Product) error {

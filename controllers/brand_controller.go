@@ -56,6 +56,22 @@ func (ctl *BrandController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail brand ditemukan", brand)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Brand Terhapus (Trash)
+// @Tags         Brands
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Brand} "Sukses"
+// @Router       /brands/deleted [get]
+func (ctl *BrandController) GetDeleted(c *gin.Context) {
+	brands, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar brand terhapus", brands)
+}
+
 // Create godoc
 // @Summary      Tambah Brand Baru
 // @Description  Menambahkan brand outdoor baru ke katalog (Admin/Staff Only)

@@ -11,6 +11,7 @@ import (
 type BrandService interface {
 	GetAll(ctx context.Context) ([]models.Brand, error)
 	GetByID(ctx context.Context, id int) (*models.Brand, error)
+	GetDeleted(ctx context.Context) ([]models.Brand, error)
 	Create(ctx context.Context, req models.BrandCreateDTO, userID int) (*models.Brand, error)
 	Update(ctx context.Context, id int, req models.BrandUpdateDTO, userID int) error
 	Delete(ctx context.Context, id, userID int) error
@@ -39,6 +40,10 @@ func (s *brandService) GetByID(ctx context.Context, id int) (*models.Brand, erro
 		return nil, err
 	}
 	return b, nil
+}
+
+func (s *brandService) GetDeleted(ctx context.Context) ([]models.Brand, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *brandService) Create(ctx context.Context, req models.BrandCreateDTO, userID int) (*models.Brand, error) {

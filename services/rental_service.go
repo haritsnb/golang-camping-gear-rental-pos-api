@@ -14,6 +14,7 @@ import (
 type RentalService interface {
 	GetAll(ctx context.Context, status string) ([]models.Rental, error)
 	GetByID(ctx context.Context, id int) (*models.Rental, error)
+	GetDeleted(ctx context.Context) ([]models.Rental, error)
 	Booking(ctx context.Context, req models.RentalBookingDTO, userID int) (*models.Rental, error)
 	Handover(ctx context.Context, rentalID int, userID int) error
 	Return(ctx context.Context, rentalID int, req models.RentalReturnDTO, userID int) (*models.Rental, error)
@@ -76,6 +77,10 @@ func (s *rentalService) GetByID(ctx context.Context, id int) (*models.Rental, er
 	}
 	rental.Items = items
 	return rental, nil
+}
+
+func (s *rentalService) GetDeleted(ctx context.Context) ([]models.Rental, error) {
+	return s.rentalRepo.GetDeleted(ctx)
 }
 
 func (s *rentalService) Booking(ctx context.Context, req models.RentalBookingDTO, userID int) (*models.Rental, error) {

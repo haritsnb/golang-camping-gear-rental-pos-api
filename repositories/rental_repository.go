@@ -10,6 +10,7 @@ type RentalRepository interface {
 	GetAll(ctx context.Context, status string) ([]models.Rental, error)
 	GetByID(ctx context.Context, id int) (*models.Rental, error)
 	GetByIDWithTx(ctx context.Context, tx *sql.Tx, id int) (*models.Rental, error)
+	GetDeleted(ctx context.Context) ([]models.Rental, error)
 	CreateWithTx(ctx context.Context, tx *sql.Tx, r *models.Rental) error
 	UpdateWithTx(ctx context.Context, tx *sql.Tx, r *models.Rental) error
 	UpdateFlexible(ctx context.Context, id int, req models.RentalUpdateDTO, modifiedBy int) error
@@ -80,6 +81,29 @@ func (r *rentalRepo) GetByIDWithTx(ctx context.Context, tx *sql.Tx, id int) (*mo
 		&ren.ID, &ren.InvoiceNumber, &ren.CustomerID, &ren.CustomerName, &ren.UserID, &ren.UserName, &ren.BookingDate, &ren.StartDate, &ren.ExpectedReturnDate, &ren.ActualReturnDate, &ren.TotalRentalFee, &ren.TotalDeposit, &ren.TotalPenaltyFee, &ren.GrandTotal, &ren.Status, &ren.CreatedAt, &ren.ModifiedAt,
 	)
 	return ren, err
+}
+
+func (r *rentalRepo) GetDeleted(ctx context.Context) ([]models.Rental, error) {
+	query := `
+		SELECT r.id, r.invoice_number, r.customer_id, c.name, r.user_id, u.name, r.booking_date, r.start_date, r.expected_return_date, r.actual_return_date, r.total_rental_fee, r.total_deposit, r.total_penalty_fee, r.grand_total, r.status, r.created_at, r.modified_at, r.deleted_at
+		FROM rentals r
+		JOIN customers c ON c.id = r.customer_id
+		JOIN users u ON u.id = r.user_id
+		WHERE r.deleted_at IS NOT NULL ORDER BY r.deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Rental
+	for rows.Next() {
+		var ren models.Rental
+		if err := rows.Scan(&ren.ID, &ren.InvoiceNumber, &ren.CustomerID, &ren.CustomerName, &ren.UserID, &ren.UserName, &ren.BookingDate, &ren.StartDate, &ren.ExpectedReturnDate, &ren.ActualReturnDate, &ren.TotalRentalFee, &ren.TotalDeposit, &ren.TotalPenaltyFee, &ren.GrandTotal, &ren.Status, &ren.CreatedAt, &ren.ModifiedAt, &ren.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, ren)
+	}
+	return list, nil
 }
 
 func (r *rentalRepo) CreateWithTx(ctx context.Context, tx *sql.Tx, ren *models.Rental) error {

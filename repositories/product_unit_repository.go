@@ -11,6 +11,7 @@ type ProductUnitRepository interface {
 	GetByID(ctx context.Context, id int) (*models.ProductUnit, error)
 	GetByUnitCode(ctx context.Context, code string) (*models.ProductUnit, error)
 	GetByIDWithTx(ctx context.Context, tx *sql.Tx, id int) (*models.ProductUnit, error)
+	GetDeleted(ctx context.Context) ([]models.ProductUnit, error)
 	UpdateStatusWithTx(ctx context.Context, tx *sql.Tx, id int, status string, modifiedBy int) error
 	Create(ctx context.Context, u *models.ProductUnit) error
 	Update(ctx context.Context, id int, req models.ProductUnitUpdateDTO, modifiedBy int) error
@@ -77,6 +78,28 @@ func (r *productUnitRepo) GetByIDWithTx(ctx context.Context, tx *sql.Tx, id int)
 	u := &models.ProductUnit{}
 	err := tx.QueryRowContext(ctx, query, id).Scan(&u.ID, &u.ProductID, &u.ProductName, &u.UnitCode, &u.SerialNumber, &u.Condition, &u.Status, &u.Notes, &u.CreatedAt, &u.ModifiedAt)
 	return u, err
+}
+
+func (r *productUnitRepo) GetDeleted(ctx context.Context) ([]models.ProductUnit, error) {
+	query := `
+		SELECT pu.id, pu.product_id, p.name, pu.unit_code, pu.serial_number, pu.condition, pu.status, pu.notes, pu.created_at, pu.modified_at, pu.deleted_at
+		FROM product_units pu
+		JOIN products p ON p.id = pu.product_id
+		WHERE pu.deleted_at IS NOT NULL ORDER BY pu.deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.ProductUnit
+	for rows.Next() {
+		var u models.ProductUnit
+		if err := rows.Scan(&u.ID, &u.ProductID, &u.ProductName, &u.UnitCode, &u.SerialNumber, &u.Condition, &u.Status, &u.Notes, &u.CreatedAt, &u.ModifiedAt, &u.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, u)
+	}
+	return list, nil
 }
 
 func (r *productUnitRepo) UpdateStatusWithTx(ctx context.Context, tx *sql.Tx, id int, status string, modifiedBy int) error {

@@ -294,6 +294,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/brands/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Daftar Brand Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Brand"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/brands/{id}": {
             "get": {
                 "security": [
@@ -680,6 +719,45 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Daftar Kategori Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Category"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -1121,6 +1199,45 @@ const docTemplate = `{
                         "description": "Bad Request / Upload Error",
                         "schema": {
                             "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "Daftar Pelanggan Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Customer"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -1638,6 +1755,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/maintenance/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Maintenance"
+                ],
+                "summary": "Daftar Servis Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Maintenance"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/maintenance/{id}": {
             "get": {
                 "security": [
@@ -2026,6 +2182,45 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Daftar Pembayaran Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Payment"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -2483,6 +2678,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/product-units/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product Units"
+                ],
+                "summary": "Daftar Unit Fisik Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.ProductUnit"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/product-units/scan/{unit_code}": {
             "get": {
                 "security": [
@@ -2932,6 +3166,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/products/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Daftar Produk Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Product"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/products/{id}": {
             "get": {
                 "security": [
@@ -3335,6 +3608,45 @@ const docTemplate = `{
                         "description": "Bad Request / Blacklisted Customer / Unit Unavailable",
                         "schema": {
                             "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/rentals/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Daftar Rental Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Rental"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -4235,6 +4547,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/roles/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Memuat seluruh data role yang berstatus soft-deleted (Admin Only)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Daftar Role Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Role"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/roles/{id}": {
             "get": {
                 "security": [
@@ -4633,6 +4985,45 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/helpers.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/deleted": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Daftar User Terhapus (Trash)",
+                "responses": {
+                    "200": {
+                        "description": "Sukses",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.User"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }

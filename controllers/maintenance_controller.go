@@ -56,6 +56,22 @@ func (ctl *MaintenanceController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail pemeliharaan alat", m)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Servis Terhapus (Trash)
+// @Tags         Maintenance
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Maintenance} "Sukses"
+// @Router       /maintenance/deleted [get]
+func (ctl *MaintenanceController) GetDeleted(c *gin.Context) {
+	list, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar tiket servis terhapus", list)
+}
+
 // Create godoc
 // @Summary      Input Tiket Servis Manual
 // @Description  Mendaftarkan unit rusak ke modul servis dan mengubah status unit fisik menjadi 'maintenance' (Admin/Staff Only)

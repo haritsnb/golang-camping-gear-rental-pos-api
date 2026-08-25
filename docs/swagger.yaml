@@ -1110,6 +1110,27 @@ paths:
       summary: Delete Permanent Brand (Force Delete)
       tags:
       - Brands
+  /brands/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Brand'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Brand Terhapus (Trash)
+      tags:
+      - Brands
   /categories:
     get:
       description: Mengambil seluruh data kategori produk alat camping
@@ -1351,6 +1372,27 @@ paths:
       security:
       - BearerAuth: []
       summary: Delete Permanent Kategori (Force Delete)
+      tags:
+      - Categories
+  /categories/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Category'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Kategori Terhapus (Trash)
       tags:
       - Categories
   /customers:
@@ -1709,6 +1751,27 @@ paths:
       summary: Delete Permanent Pelanggan (Force Delete)
       tags:
       - Customers
+  /customers/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Customer'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Pelanggan Terhapus (Trash)
+      tags:
+      - Customers
   /maintenance:
     get:
       description: Memuat seluruh tiket servis dan perbaikan alat camping
@@ -1992,6 +2055,27 @@ paths:
       summary: Delete Permanent Tiket Servis (Force Delete)
       tags:
       - Maintenance
+  /maintenance/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Maintenance'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Servis Terhapus (Trash)
+      tags:
+      - Maintenance
   /payments:
     post:
       consumes:
@@ -2205,6 +2289,27 @@ paths:
       security:
       - BearerAuth: []
       summary: Delete Permanent Pembayaran (Force Delete)
+      tags:
+      - Payments
+  /payments/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Payment'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Pembayaran Terhapus (Trash)
       tags:
       - Payments
   /payments/rental/{rental_id}:
@@ -2489,6 +2594,27 @@ paths:
       summary: Delete Permanent Unit Fisik (Force Delete)
       tags:
       - Product Units
+  /product-units/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.ProductUnit'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Unit Fisik Terhapus (Trash)
+      tags:
+      - Product Units
   /product-units/scan/{unit_code}:
     get:
       description: Memindai kode barcode unik unit fisik saat transaksi checkout atau
@@ -2766,6 +2892,27 @@ paths:
       security:
       - BearerAuth: []
       summary: Delete Permanent Produk (Force Delete)
+      tags:
+      - Products
+  /products/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Product'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Produk Terhapus (Trash)
       tags:
       - Products
   /rentals:
@@ -3185,6 +3332,27 @@ paths:
       summary: Booking Sewa Alat (Fase 1)
       tags:
       - Rentals
+  /rentals/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Rental'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Rental Terhapus (Trash)
+      tags:
+      - Rentals
   /reports/inventory:
     get:
       description: Memuat ringkasan seluruh unit fisik inventaris (tersedia, disewa,
@@ -3591,6 +3759,28 @@ paths:
       summary: Delete Permanent Role (Force Delete)
       tags:
       - Roles
+  /roles/deleted:
+    get:
+      description: Memuat seluruh data role yang berstatus soft-deleted (Admin Only)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Role'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar Role Terhapus (Trash)
+      tags:
+      - Roles
   /users:
     get:
       description: Mengambil seluruh data user akun operasional toko (Admin Only)
@@ -3842,6 +4032,27 @@ paths:
       security:
       - BearerAuth: []
       summary: Delete Permanent User (Force Delete)
+      tags:
+      - Users
+  /users/deleted:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sukses
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.User'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Daftar User Terhapus (Trash)
       tags:
       - Users
 securityDefinitions:

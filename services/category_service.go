@@ -11,6 +11,7 @@ import (
 type CategoryService interface {
 	GetAll(ctx context.Context) ([]models.Category, error)
 	GetByID(ctx context.Context, id int) (*models.Category, error)
+	GetDeleted(ctx context.Context) ([]models.Category, error)
 	Create(ctx context.Context, req models.CategoryCreateDTO, userID int) (*models.Category, error)
 	Update(ctx context.Context, id int, req models.CategoryUpdateDTO, userID int) error
 	Delete(ctx context.Context, id, userID int) error
@@ -39,6 +40,10 @@ func (s *categoryService) GetByID(ctx context.Context, id int) (*models.Category
 		return nil, err
 	}
 	return cat, nil
+}
+
+func (s *categoryService) GetDeleted(ctx context.Context) ([]models.Category, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *categoryService) Create(ctx context.Context, req models.CategoryCreateDTO, userID int) (*models.Category, error) {

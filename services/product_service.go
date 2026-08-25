@@ -11,6 +11,7 @@ import (
 type ProductService interface {
 	GetAll(ctx context.Context) ([]models.Product, error)
 	GetByID(ctx context.Context, id int) (*models.Product, error)
+	GetDeleted(ctx context.Context) ([]models.Product, error)
 	Create(ctx context.Context, req models.ProductCreateDTO, userID int) (*models.Product, error)
 	Update(ctx context.Context, id int, req models.ProductUpdateDTO, userID int) error
 	Delete(ctx context.Context, id, userID int) error
@@ -39,6 +40,10 @@ func (s *productService) GetByID(ctx context.Context, id int) (*models.Product, 
 		return nil, err
 	}
 	return p, nil
+}
+
+func (s *productService) GetDeleted(ctx context.Context) ([]models.Product, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *productService) Create(ctx context.Context, req models.ProductCreateDTO, userID int) (*models.Product, error) {

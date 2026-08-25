@@ -56,6 +56,22 @@ func (ctl *CategoryController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail kategori ditemukan", cat)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Kategori Terhapus (Trash)
+// @Tags         Categories
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Category} "Sukses"
+// @Router       /categories/deleted [get]
+func (ctl *CategoryController) GetDeleted(c *gin.Context) {
+	cats, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar kategori terhapus", cats)
+}
+
 // Create godoc
 // @Summary      Tambah Kategori Baru
 // @Description  Menambahkan kategori perlengkapan camping baru (Admin/Staff Only)

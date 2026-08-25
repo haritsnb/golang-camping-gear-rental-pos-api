@@ -12,6 +12,7 @@ import (
 type MaintenanceService interface {
 	GetAll(ctx context.Context) ([]models.Maintenance, error)
 	GetByID(ctx context.Context, id int) (*models.Maintenance, error)
+	GetDeleted(ctx context.Context) ([]models.Maintenance, error)
 	Create(ctx context.Context, req models.MaintenanceCreateDTO, userID int) (*models.Maintenance, error)
 	Update(ctx context.Context, id int, req models.MaintenanceUpdateDTO, userID int) error
 	Complete(ctx context.Context, id int, userID int) error
@@ -43,6 +44,10 @@ func (s *maintenanceService) GetByID(ctx context.Context, id int) (*models.Maint
 		return nil, err
 	}
 	return m, nil
+}
+
+func (s *maintenanceService) GetDeleted(ctx context.Context) ([]models.Maintenance, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *maintenanceService) Create(ctx context.Context, req models.MaintenanceCreateDTO, userID int) (*models.Maintenance, error) {

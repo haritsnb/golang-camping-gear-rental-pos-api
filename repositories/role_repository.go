@@ -10,6 +10,7 @@ type RoleRepository interface {
 	GetAll(ctx context.Context) ([]models.Role, error)
 	GetByID(ctx context.Context, id int) (*models.Role, error)
 	GetByName(ctx context.Context, name string) (*models.Role, error)
+	GetDeleted(ctx context.Context) ([]models.Role, error)
 	Create(ctx context.Context, role *models.Role) error
 	Update(ctx context.Context, id int, req models.RoleUpdateDTO, modifiedBy int) error
 	Delete(ctx context.Context, id, deletedBy int) error
@@ -56,6 +57,24 @@ func (r *roleRepo) GetByName(ctx context.Context, name string) (*models.Role, er
 	role := &models.Role{}
 	err := r.db.QueryRowContext(ctx, query, name).Scan(&role.ID, &role.Name, &role.Description, &role.CreatedAt, &role.ModifiedAt)
 	return role, err
+}
+
+func (r *roleRepo) GetDeleted(ctx context.Context) ([]models.Role, error) {
+	query := `SELECT id, name, description, created_at, modified_at, deleted_at FROM roles WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Role
+	for rows.Next() {
+		var role models.Role
+		if err := rows.Scan(&role.ID, &role.Name, &role.Description, &role.CreatedAt, &role.ModifiedAt, &role.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, role)
+	}
+	return list, nil
 }
 
 func (r *roleRepo) Create(ctx context.Context, role *models.Role) error {

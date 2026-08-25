@@ -58,6 +58,22 @@ func (ctl *RentalController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail invoice rental", rental)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Rental Terhapus (Trash)
+// @Tags         Rentals
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Rental} "Sukses"
+// @Router       /rentals/deleted [get]
+func (ctl *RentalController) GetDeleted(c *gin.Context) {
+	rentals, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar transaksi rental terhapus", rentals)
+}
+
 // Booking godoc
 // @Summary      Booking Sewa Alat (Fase 1)
 // @Description  Membuat pesanan sewa baru, mengunci unit fisik, menghitung durasi hari, deposit, dan mencatat DP

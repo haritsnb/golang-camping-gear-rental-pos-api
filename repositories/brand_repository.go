@@ -10,6 +10,7 @@ type BrandRepository interface {
 	GetAll(ctx context.Context) ([]models.Brand, error)
 	GetByID(ctx context.Context, id int) (*models.Brand, error)
 	GetByName(ctx context.Context, name string) (*models.Brand, error)
+	GetDeleted(ctx context.Context) ([]models.Brand, error)
 	Create(ctx context.Context, b *models.Brand) error
 	Update(ctx context.Context, id int, req models.BrandUpdateDTO, modifiedBy int) error
 	Delete(ctx context.Context, id, deletedBy int) error
@@ -50,6 +51,24 @@ func (r *brandRepo) GetByName(ctx context.Context, name string) (*models.Brand, 
 	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, is_active, created_at, modified_at FROM brands WHERE name = $1 AND deleted_at IS NULL`, name).
 		Scan(&b.ID, &b.Name, &b.Description, &b.IsActive, &b.CreatedAt, &b.ModifiedAt)
 	return b, err
+}
+
+func (r *brandRepo) GetDeleted(ctx context.Context) ([]models.Brand, error) {
+	query := `SELECT id, name, description, is_active, created_at, modified_at, deleted_at FROM brands WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Brand
+	for rows.Next() {
+		var b models.Brand
+		if err := rows.Scan(&b.ID, &b.Name, &b.Description, &b.IsActive, &b.CreatedAt, &b.ModifiedAt, &b.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, b)
+	}
+	return list, nil
 }
 
 func (r *brandRepo) Create(ctx context.Context, b *models.Brand) error {

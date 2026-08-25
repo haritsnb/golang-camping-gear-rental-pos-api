@@ -11,6 +11,7 @@ import (
 type PaymentService interface {
 	GetByRentalID(ctx context.Context, rentalID int) ([]models.Payment, error)
 	GetByID(ctx context.Context, id int) (*models.Payment, error)
+	GetDeleted(ctx context.Context) ([]models.Payment, error)
 	Create(ctx context.Context, req models.PaymentCreateDTO, userID int) (*models.Payment, error)
 	Update(ctx context.Context, id int, req models.PaymentUpdateDTO, userID int) error
 	Delete(ctx context.Context, id, userID int) error
@@ -39,6 +40,10 @@ func (s *paymentService) GetByID(ctx context.Context, id int) (*models.Payment, 
 		return nil, err
 	}
 	return p, nil
+}
+
+func (s *paymentService) GetDeleted(ctx context.Context) ([]models.Payment, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *paymentService) Create(ctx context.Context, req models.PaymentCreateDTO, userID int) (*models.Payment, error) {

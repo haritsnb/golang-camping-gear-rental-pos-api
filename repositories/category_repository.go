@@ -10,6 +10,7 @@ type CategoryRepository interface {
 	GetAll(ctx context.Context) ([]models.Category, error)
 	GetByID(ctx context.Context, id int) (*models.Category, error)
 	GetByName(ctx context.Context, name string) (*models.Category, error)
+	GetDeleted(ctx context.Context) ([]models.Category, error)
 	Create(ctx context.Context, c *models.Category) error
 	Update(ctx context.Context, id int, req models.CategoryUpdateDTO, modifiedBy int) error
 	Delete(ctx context.Context, id, deletedBy int) error
@@ -50,6 +51,24 @@ func (r *categoryRepo) GetByName(ctx context.Context, name string) (*models.Cate
 	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, created_at, modified_at FROM categories WHERE name = $1 AND deleted_at IS NULL`, name).
 		Scan(&c.ID, &c.Name, &c.Description, &c.CreatedAt, &c.ModifiedAt)
 	return c, err
+}
+
+func (r *categoryRepo) GetDeleted(ctx context.Context) ([]models.Category, error) {
+	query := `SELECT id, name, description, created_at, modified_at, deleted_at FROM categories WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Category
+	for rows.Next() {
+		var c models.Category
+		if err := rows.Scan(&c.ID, &c.Name, &c.Description, &c.CreatedAt, &c.ModifiedAt, &c.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, c)
+	}
+	return list, nil
 }
 
 func (r *categoryRepo) Create(ctx context.Context, c *models.Category) error {

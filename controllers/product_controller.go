@@ -56,6 +56,22 @@ func (ctl *ProductController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail produk ditemukan", prod)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Produk Terhapus (Trash)
+// @Tags         Products
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Product} "Sukses"
+// @Router       /products/deleted [get]
+func (ctl *ProductController) GetDeleted(c *gin.Context) {
+	prods, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar produk terhapus", prods)
+}
+
 // Create godoc
 // @Summary      Tambah Produk Baru
 // @Description  Mendaftarkan produk sewa baru ke katalog sistem (Admin/Staff Only)

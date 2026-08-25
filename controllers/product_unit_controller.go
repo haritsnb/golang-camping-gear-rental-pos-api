@@ -56,6 +56,22 @@ func (ctl *ProductUnitController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail unit fisik ditemukan", unit)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Unit Fisik Terhapus (Trash)
+// @Tags         Product Units
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.ProductUnit} "Sukses"
+// @Router       /product-units/deleted [get]
+func (ctl *ProductUnitController) GetDeleted(c *gin.Context) {
+	units, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar unit fisik terhapus", units)
+}
+
 // ScanUnitCode godoc
 // @Summary      Scan Barcode / QR Code Unit Fisik
 // @Description  Memindai kode barcode unik unit fisik saat transaksi checkout atau serah terima alat

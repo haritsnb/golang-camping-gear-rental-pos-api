@@ -11,6 +11,7 @@ import (
 type CustomerService interface {
 	GetAll(ctx context.Context) ([]models.Customer, error)
 	GetByID(ctx context.Context, id int) (*models.Customer, error)
+	GetDeleted(ctx context.Context) ([]models.Customer, error)
 	Create(ctx context.Context, dto models.CustomerCreateDTO, photoURL *string, userID int) (*models.Customer, error)
 	Update(ctx context.Context, id int, dto models.CustomerUpdateDTO, photoURL *string, userID int) error
 	SetBlacklist(ctx context.Context, id int, isBlacklist bool, userID int) error
@@ -40,6 +41,10 @@ func (s *customerService) GetByID(ctx context.Context, id int) (*models.Customer
 		return nil, err
 	}
 	return customer, nil
+}
+
+func (s *customerService) GetDeleted(ctx context.Context) ([]models.Customer, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *customerService) Create(ctx context.Context, dto models.CustomerCreateDTO, photoURL *string, userID int) (*models.Customer, error) {

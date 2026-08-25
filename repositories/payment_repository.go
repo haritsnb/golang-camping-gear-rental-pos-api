@@ -9,6 +9,7 @@ import (
 type PaymentRepository interface {
 	GetByRentalID(ctx context.Context, rentalID int) ([]models.Payment, error)
 	GetByID(ctx context.Context, id int) (*models.Payment, error)
+	GetDeleted(ctx context.Context) ([]models.Payment, error)
 	CreateWithTx(ctx context.Context, tx *sql.Tx, p *models.Payment) error
 	Create(ctx context.Context, p *models.Payment) error
 	Update(ctx context.Context, id int, req models.PaymentUpdateDTO, modifiedBy int) error
@@ -44,6 +45,24 @@ func (r *paymentRepo) GetByID(ctx context.Context, id int) (*models.Payment, err
 	p := &models.Payment{}
 	err := r.db.QueryRowContext(ctx, query, id).Scan(&p.ID, &p.RentalID, &p.UserID, &p.PaymentType, &p.PaymentMethod, &p.Amount, &p.ReferenceNumber, &p.Notes, &p.PaidAt)
 	return p, err
+}
+
+func (r *paymentRepo) GetDeleted(ctx context.Context) ([]models.Payment, error) {
+	query := `SELECT id, rental_id, user_id, payment_type, payment_method, amount, reference_number, notes, paid_at, deleted_at FROM payments WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Payment
+	for rows.Next() {
+		var p models.Payment
+		if err := rows.Scan(&p.ID, &p.RentalID, &p.UserID, &p.PaymentType, &p.PaymentMethod, &p.Amount, &p.ReferenceNumber, &p.Notes, &p.PaidAt, &p.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, p)
+	}
+	return list, nil
 }
 
 func (r *paymentRepo) CreateWithTx(ctx context.Context, tx *sql.Tx, p *models.Payment) error {

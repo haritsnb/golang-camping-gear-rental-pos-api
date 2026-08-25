@@ -58,6 +58,22 @@ func (ctl *PaymentController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail pembayaran ditemukan", payment)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Pembayaran Terhapus (Trash)
+// @Tags         Payments
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Payment} "Sukses"
+// @Router       /payments/deleted [get]
+func (ctl *PaymentController) GetDeleted(c *gin.Context) {
+	payments, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar pembayaran terhapus", payments)
+}
+
 // Create godoc
 // @Summary      Catat Pembayaran Manual
 // @Description  Mencatat pembayaran tambahan/pelunasan manual untuk rental tertentu

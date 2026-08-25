@@ -118,6 +118,7 @@ func main() {
 			{
 				rolesGroup.GET("", roleController.GetAll)
 				rolesGroup.GET("/:id", roleController.GetByID)
+				rolesGroup.GET("/deleted", roleController.GetDeleted)
 				rolesGroup.POST("", roleController.Create)
 				rolesGroup.POST("/:id", roleController.Restore)
 				rolesGroup.PUT("/:id", roleController.Update)
@@ -129,6 +130,7 @@ func main() {
 			{
 				usersGroup.GET("", userController.GetAll)
 				usersGroup.GET("/:id", userController.GetByID)
+				usersGroup.GET("/deleted", userController.GetDeleted)
 				usersGroup.POST("", userController.Create)
 				usersGroup.POST("/:id", userController.Restore)
 				usersGroup.PUT("/:id", userController.Update)
@@ -140,6 +142,7 @@ func main() {
 			{
 				custGroup.GET("", custController.GetAll)
 				custGroup.GET("/:id", custController.GetByID)
+				custGroup.GET("/deleted", custController.GetDeleted)
 				custGroup.POST("", custController.Create)
 				custGroup.POST("/:id", custController.Restore)
 				custGroup.PUT("/:id", custController.Update)
@@ -152,6 +155,7 @@ func main() {
 			{
 				catGroup.GET("", catController.GetAll)
 				catGroup.GET("/:id", catController.GetByID)
+				catGroup.GET("/deleted", middlewares.RoleGuard("admin", "staff"), catController.GetDeleted)
 				catGroup.POST("", middlewares.RoleGuard("admin", "staff"), catController.Create)
 				catGroup.POST("/:id", middlewares.RoleGuard("admin"), catController.Restore)
 				catGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), catController.Update)
@@ -163,6 +167,7 @@ func main() {
 			{
 				brandGroup.GET("", brandController.GetAll)
 				brandGroup.GET("/:id", brandController.GetByID)
+				brandGroup.GET("/deleted", middlewares.RoleGuard("admin", "staff"), brandController.GetDeleted)
 				brandGroup.POST("", middlewares.RoleGuard("admin", "staff"), brandController.Create)
 				brandGroup.POST("/:id", middlewares.RoleGuard("admin"), brandController.Restore)
 				brandGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), brandController.Update)
@@ -174,6 +179,7 @@ func main() {
 			{
 				prodGroup.GET("", prodController.GetAll)
 				prodGroup.GET("/:id", prodController.GetByID)
+				prodGroup.GET("/deleted", middlewares.RoleGuard("admin", "staff"), prodController.GetDeleted)
 				prodGroup.POST("", middlewares.RoleGuard("admin", "staff"), prodController.Create)
 				prodGroup.POST("/:id", middlewares.RoleGuard("admin"), prodController.Restore)
 				prodGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), prodController.Update)
@@ -185,6 +191,7 @@ func main() {
 			{
 				unitGroup.GET("", unitController.GetAll)
 				unitGroup.GET("/:id", unitController.GetByID)
+				unitGroup.GET("/deleted", middlewares.RoleGuard("admin", "staff"), unitController.GetDeleted)
 				unitGroup.GET("/scan/:unit_code", unitController.ScanUnitCode)
 				unitGroup.POST("", middlewares.RoleGuard("admin", "staff"), unitController.Create)
 				unitGroup.POST("/:id", middlewares.RoleGuard("admin"), unitController.Restore)
@@ -197,6 +204,7 @@ func main() {
 			{
 				rentalGroup.GET("", rentalController.GetAll)
 				rentalGroup.GET("/:id", rentalController.GetByID)
+				rentalGroup.GET("/deleted", middlewares.RoleGuard("admin", "cashier"), rentalController.GetDeleted)
 				rentalGroup.POST("/booking", rentalController.Booking)
 				rentalGroup.POST("/:id/handover", rentalController.Handover)
 				rentalGroup.POST("/:id/return", rentalController.Return)
@@ -212,6 +220,7 @@ func main() {
 			{
 				payGroup.GET("/rental/:rental_id", payController.GetByRentalID)
 				payGroup.GET("/:id", payController.GetByID)
+				payGroup.GET("/deleted", middlewares.RoleGuard("admin"), payController.GetDeleted)
 				payGroup.POST("", payController.Create)
 				payGroup.POST("/:id", middlewares.RoleGuard("admin"), payController.Restore)
 				payGroup.PUT("/:id", middlewares.RoleGuard("admin"), payController.Update)
@@ -223,6 +232,7 @@ func main() {
 			{
 				maintGroup.GET("", maintController.GetAll)
 				maintGroup.GET("/:id", maintController.GetByID)
+				maintGroup.GET("/deleted", middlewares.RoleGuard("admin", "staff"), maintController.GetDeleted)
 				maintGroup.POST("", middlewares.RoleGuard("admin", "staff"), maintController.Create)
 				maintGroup.POST("/:id", middlewares.RoleGuard("admin"), maintController.Restore)
 				maintGroup.PUT("/:id", middlewares.RoleGuard("admin", "staff"), maintController.Update)

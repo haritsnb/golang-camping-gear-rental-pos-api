@@ -12,6 +12,7 @@ type ProductUnitService interface {
 	GetAll(ctx context.Context) ([]models.ProductUnit, error)
 	GetByID(ctx context.Context, id int) (*models.ProductUnit, error)
 	GetByUnitCode(ctx context.Context, code string) (*models.ProductUnit, error)
+	GetDeleted(ctx context.Context) ([]models.ProductUnit, error)
 	Create(ctx context.Context, req models.ProductUnitCreateDTO, userID int) (*models.ProductUnit, error)
 	Update(ctx context.Context, id int, req models.ProductUnitUpdateDTO, userID int) error
 	Delete(ctx context.Context, id, userID int) error
@@ -51,6 +52,10 @@ func (s *productUnitService) GetByUnitCode(ctx context.Context, code string) (*m
 		return nil, err
 	}
 	return unit, nil
+}
+
+func (s *productUnitService) GetDeleted(ctx context.Context) ([]models.ProductUnit, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *productUnitService) Create(ctx context.Context, req models.ProductUnitCreateDTO, userID int) (*models.ProductUnit, error) {

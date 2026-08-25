@@ -9,6 +9,7 @@ import (
 type MaintenanceRepository interface {
 	GetAll(ctx context.Context) ([]models.Maintenance, error)
 	GetByID(ctx context.Context, id int) (*models.Maintenance, error)
+	GetDeleted(ctx context.Context) ([]models.Maintenance, error)
 	Create(ctx context.Context, m *models.Maintenance) error
 	CreateWithTx(ctx context.Context, tx *sql.Tx, m *models.Maintenance) error
 	Update(ctx context.Context, id int, req models.MaintenanceUpdateDTO, modifiedBy int) error
@@ -53,6 +54,28 @@ func (r *maintenanceRepo) GetByID(ctx context.Context, id int) (*models.Maintena
 	m := &models.Maintenance{}
 	err := r.db.QueryRowContext(ctx, query, id).Scan(&m.ID, &m.ProductUnitID, &m.UnitCode, &m.IssueDescription, &m.Cost, &m.StartDate, &m.CompletedDate, &m.Status, &m.CreatedAt, &m.ModifiedAt)
 	return m, err
+}
+
+func (r *maintenanceRepo) GetDeleted(ctx context.Context) ([]models.Maintenance, error) {
+	query := `
+		SELECT m.id, m.product_unit_id, pu.unit_code, m.issue_description, m.cost, m.start_date, m.completed_date, m.status, m.created_at, m.modified_at, m.deleted_at
+		FROM maintenance m
+		JOIN product_units pu ON pu.id = m.product_unit_id
+		WHERE m.deleted_at IS NOT NULL ORDER BY m.deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Maintenance
+	for rows.Next() {
+		var m models.Maintenance
+		if err := rows.Scan(&m.ID, &m.ProductUnitID, &m.UnitCode, &m.IssueDescription, &m.Cost, &m.StartDate, &m.CompletedDate, &m.Status, &m.CreatedAt, &m.ModifiedAt, &m.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, m)
+	}
+	return list, nil
 }
 
 func (r *maintenanceRepo) Create(ctx context.Context, m *models.Maintenance) error {

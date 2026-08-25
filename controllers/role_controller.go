@@ -56,6 +56,23 @@ func (ctl *RoleController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail role ditemukan", role)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Role Terhapus (Trash)
+// @Description  Memuat seluruh data role yang berstatus soft-deleted (Admin Only)
+// @Tags         Roles
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Role} "Sukses"
+// @Router       /roles/deleted [get]
+func (ctl *RoleController) GetDeleted(c *gin.Context) {
+	roles, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar role terhapus", roles)
+}
+
 // Create godoc
 // @Summary      Tambah Role Baru
 // @Description  Membuat role baru dalam sistem (Admin Only)

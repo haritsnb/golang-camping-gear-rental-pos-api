@@ -56,6 +56,22 @@ func (ctl *UserController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail user ditemukan", user)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar User Terhapus (Trash)
+// @Tags         Users
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.User} "Sukses"
+// @Router       /users/deleted [get]
+func (ctl *UserController) GetDeleted(c *gin.Context) {
+	users, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar user terhapus", users)
+}
+
 // Create godoc
 // @Summary      Tambah Akun User Baru
 // @Description  Mendaftarkan akun user baru (Kasir/Staff/Admin) beserta enkripsi bcrypt password (Admin Only)

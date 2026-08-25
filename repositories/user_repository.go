@@ -7,9 +7,10 @@ import (
 )
 
 type UserRepository interface {
-	GetByUsername(ctx context.Context, username string) (*models.User, error)
-	GetByID(ctx context.Context, id int) (*models.User, error)
 	GetAll(ctx context.Context) ([]models.User, error)
+	GetByID(ctx context.Context, id int) (*models.User, error)
+	GetByUsername(ctx context.Context, username string) (*models.User, error)
+	GetDeleted(ctx context.Context) ([]models.User, error)
 	Create(ctx context.Context, user *models.User) error
 	Update(ctx context.Context, id int, req models.UserUpdateDTO, passwordHash *string, modifiedBy int) error
 	Delete(ctx context.Context, id, deletedBy int) error
@@ -23,68 +24,6 @@ type userRepo struct {
 
 func NewUserRepository(db *sql.DB) UserRepository {
 	return &userRepo{db: db}
-}
-
-func (r *userRepo) GetByUsername(ctx context.Context, username string) (*models.User, error) {
-	query := `
-		SELECT 
-			u.id, 
-			u.role_id, 
-			r.name, 
-			u.name, 
-			u.username, 
-			u.password_hash, 
-			COALESCE(u.phone, ''), 
-			u.is_active, 
-			u.created_at, 
-			u.modified_at
-		FROM users u
-		JOIN roles r ON r.id = u.role_id
-		WHERE u.username = $1 AND u.deleted_at IS NULL`
-
-	u := &models.User{}
-	var phone string
-	err := r.db.QueryRowContext(ctx, query, username).Scan(
-		&u.ID, &u.RoleID, &u.RoleName, &u.Name, &u.Username, &u.PasswordHash, &phone, &u.IsActive, &u.CreatedAt, &u.ModifiedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-	if phone != "" {
-		u.Phone = &phone
-	}
-	return u, nil
-}
-
-func (r *userRepo) GetByID(ctx context.Context, id int) (*models.User, error) {
-	query := `
-		SELECT 
-			u.id, 
-			u.role_id, 
-			r.name, 
-			u.name, 
-			u.username, 
-			u.password_hash, 
-			COALESCE(u.phone, ''), 
-			u.is_active, 
-			u.created_at, 
-			u.modified_at
-		FROM users u
-		JOIN roles r ON r.id = u.role_id
-		WHERE u.id = $1 AND u.deleted_at IS NULL`
-
-	u := &models.User{}
-	var phone string
-	err := r.db.QueryRowContext(ctx, query, id).Scan(
-		&u.ID, &u.RoleID, &u.RoleName, &u.Name, &u.Username, &u.PasswordHash, &phone, &u.IsActive, &u.CreatedAt, &u.ModifiedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-	if phone != "" {
-		u.Phone = &phone
-	}
-	return u, nil
 }
 
 func (r *userRepo) GetAll(ctx context.Context) ([]models.User, error) {
@@ -123,6 +62,94 @@ func (r *userRepo) GetAll(ctx context.Context) ([]models.User, error) {
 		users = append(users, u)
 	}
 	return users, nil
+}
+
+func (r *userRepo) GetByID(ctx context.Context, id int) (*models.User, error) {
+	query := `
+		SELECT 
+			u.id, 
+			u.role_id, 
+			r.name, 
+			u.name, 
+			u.username, 
+			u.password_hash, 
+			COALESCE(u.phone, ''), 
+			u.is_active, 
+			u.created_at, 
+			u.modified_at
+		FROM users u
+		JOIN roles r ON r.id = u.role_id
+		WHERE u.id = $1 AND u.deleted_at IS NULL`
+
+	u := &models.User{}
+	var phone string
+	err := r.db.QueryRowContext(ctx, query, id).Scan(
+		&u.ID, &u.RoleID, &u.RoleName, &u.Name, &u.Username, &u.PasswordHash, &phone, &u.IsActive, &u.CreatedAt, &u.ModifiedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+	if phone != "" {
+		u.Phone = &phone
+	}
+	return u, nil
+}
+
+func (r *userRepo) GetByUsername(ctx context.Context, username string) (*models.User, error) {
+	query := `
+		SELECT 
+			u.id, 
+			u.role_id, 
+			r.name, 
+			u.name, 
+			u.username, 
+			u.password_hash, 
+			COALESCE(u.phone, ''), 
+			u.is_active, 
+			u.created_at, 
+			u.modified_at
+		FROM users u
+		JOIN roles r ON r.id = u.role_id
+		WHERE u.username = $1 AND u.deleted_at IS NULL`
+
+	u := &models.User{}
+	var phone string
+	err := r.db.QueryRowContext(ctx, query, username).Scan(
+		&u.ID, &u.RoleID, &u.RoleName, &u.Name, &u.Username, &u.PasswordHash, &phone, &u.IsActive, &u.CreatedAt, &u.ModifiedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+	if phone != "" {
+		u.Phone = &phone
+	}
+	return u, nil
+}
+
+func (r *userRepo) GetDeleted(ctx context.Context) ([]models.User, error) {
+	query := `
+		SELECT u.id, u.role_id, r.name, u.name, u.username, COALESCE(u.phone, ''), u.is_active, u.created_at, u.modified_at, u.deleted_at
+		FROM users u
+		JOIN roles r ON r.id = u.role_id
+		WHERE u.deleted_at IS NOT NULL ORDER BY u.deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.User
+	for rows.Next() {
+		var u models.User
+		var phone string
+		if err := rows.Scan(&u.ID, &u.RoleID, &u.RoleName, &u.Name, &u.Username, &phone, &u.IsActive, &u.CreatedAt, &u.ModifiedAt, &u.DeletedAt); err != nil {
+			return nil, err
+		}
+		if phone != "" {
+			u.Phone = &phone
+		}
+		list = append(list, u)
+	}
+	return list, nil
 }
 
 func (r *userRepo) Create(ctx context.Context, user *models.User) error {

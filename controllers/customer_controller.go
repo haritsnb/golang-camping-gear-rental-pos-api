@@ -56,6 +56,22 @@ func (ctl *CustomerController) GetByID(c *gin.Context) {
 	helpers.ResponseSuccess(c, http.StatusOK, "Detail pelanggan ditemukan", cust)
 }
 
+// GetDeleted godoc
+// @Summary      Daftar Pelanggan Terhapus (Trash)
+// @Tags         Customers
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200 {object} helpers.APIResponse{data=[]models.Customer} "Sukses"
+// @Router       /customers/deleted [get]
+func (ctl *CustomerController) GetDeleted(c *gin.Context) {
+	customers, err := ctl.service.GetDeleted(c.Request.Context())
+	if err != nil {
+		helpers.InternalServerError(c, err.Error())
+		return
+	}
+	helpers.ResponseSuccess(c, http.StatusOK, "Daftar pelanggan terhapus", customers)
+}
+
 // Create godoc
 // @Summary      Registrasi Pelanggan & Upload KYC
 // @Description  Mendaftarkan data pelanggan baru dan mengunggah foto kartu identitas (KTP/SIM/Paspor)

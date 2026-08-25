@@ -11,6 +11,7 @@ import (
 type RoleService interface {
 	GetAll(ctx context.Context) ([]models.Role, error)
 	GetByID(ctx context.Context, id int) (*models.Role, error)
+	GetDeleted(ctx context.Context) ([]models.Role, error)
 	Create(ctx context.Context, req models.RoleCreateDTO, currentUserID int) (*models.Role, error)
 	Update(ctx context.Context, id int, req models.RoleUpdateDTO, currentUserID int) error
 	Delete(ctx context.Context, id, currentUserID int) error
@@ -39,6 +40,10 @@ func (s *roleService) GetByID(ctx context.Context, id int) (*models.Role, error)
 		return nil, err
 	}
 	return role, nil
+}
+
+func (s *roleService) GetDeleted(ctx context.Context) ([]models.Role, error) {
+	return s.repo.GetDeleted(ctx)
 }
 
 func (s *roleService) Create(ctx context.Context, req models.RoleCreateDTO, currentUserID int) (*models.Role, error) {

@@ -10,6 +10,7 @@ type CustomerRepository interface {
 	GetAll(ctx context.Context) ([]models.Customer, error)
 	GetByID(ctx context.Context, id int) (*models.Customer, error)
 	GetByIdentityNumber(ctx context.Context, identityNumber string) (*models.Customer, error)
+	GetDeleted(ctx context.Context) ([]models.Customer, error)
 	Create(ctx context.Context, c *models.Customer) error
 	Update(ctx context.Context, id int, req models.CustomerUpdateDTO, photoURL *string, modifiedBy int) error
 	SetBlacklist(ctx context.Context, id int, isBlacklist bool, modifiedBy int) error
@@ -94,6 +95,26 @@ func (r *customerRepo) GetByIdentityNumber(ctx context.Context, identityNumber s
 		return nil, err
 	}
 	return c, nil
+}
+
+func (r *customerRepo) GetDeleted(ctx context.Context) ([]models.Customer, error) {
+	query := `
+		SELECT id, name, identity_type, identity_number, identity_photo_url, phone, emergency_contact, email, address, is_blacklisted, notes, created_at, modified_at, deleted_at
+		FROM customers WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var list []models.Customer
+	for rows.Next() {
+		var c models.Customer
+		if err := rows.Scan(&c.ID, &c.Name, &c.IdentityType, &c.IdentityNumber, &c.IdentityPhotoURL, &c.Phone, &c.EmergencyContact, &c.Email, &c.Address, &c.IsBlacklisted, &c.Notes, &c.CreatedAt, &c.ModifiedAt, &c.DeletedAt); err != nil {
+			return nil, err
+		}
+		list = append(list, c)
+	}
+	return list, nil
 }
 
 func (r *customerRepo) Create(ctx context.Context, c *models.Customer) error {
