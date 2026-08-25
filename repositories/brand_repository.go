@@ -43,14 +43,20 @@ func (r *brandRepo) GetByID(ctx context.Context, id int) (*models.Brand, error) 
 	b := &models.Brand{}
 	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, is_active, created_at, modified_at FROM brands WHERE id = $1 AND deleted_at IS NULL`, id).
 		Scan(&b.ID, &b.Name, &b.Description, &b.IsActive, &b.CreatedAt, &b.ModifiedAt)
-	return b, err
+	if err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
 func (r *brandRepo) GetByName(ctx context.Context, name string) (*models.Brand, error) {
 	b := &models.Brand{}
 	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, is_active, created_at, modified_at FROM brands WHERE name = $1 AND deleted_at IS NULL`, name).
 		Scan(&b.ID, &b.Name, &b.Description, &b.IsActive, &b.CreatedAt, &b.ModifiedAt)
-	return b, err
+	if err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
 func (r *brandRepo) GetDeleted(ctx context.Context) ([]models.Brand, error) {

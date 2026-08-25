@@ -58,19 +58,11 @@ func (r *customerRepo) GetAll(ctx context.Context) ([]models.Customer, error) {
 }
 
 func (r *customerRepo) GetByID(ctx context.Context, id int) (*models.Customer, error) {
-	query := `
-		SELECT 
-			id, name, identity_type, identity_number, identity_photo_url, phone, 
-			emergency_contact, email, address, is_blacklisted, notes, created_at, modified_at
-		FROM customers 
-		WHERE id = $1 AND deleted_at IS NULL`
-
 	c := &models.Customer{}
-	err := r.db.QueryRowContext(ctx, query, id).Scan(
-		&c.ID, &c.Name, &c.IdentityType, &c.IdentityNumber, &c.IdentityPhotoURL,
-		&c.Phone, &c.EmergencyContact, &c.Email, &c.Address, &c.IsBlacklisted,
-		&c.Notes, &c.CreatedAt, &c.ModifiedAt,
-	)
+	err := r.db.QueryRowContext(ctx, `
+		SELECT id, name, identity_type, identity_number, identity_photo_url, phone, emergency_contact, email, address, is_blacklisted, notes, created_at, modified_at
+		FROM customers WHERE id = $1 AND deleted_at IS NULL`, id).
+		Scan(&c.ID, &c.Name, &c.IdentityType, &c.IdentityNumber, &c.IdentityPhotoURL, &c.Phone, &c.EmergencyContact, &c.Email, &c.Address, &c.IsBlacklisted, &c.Notes, &c.CreatedAt, &c.ModifiedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -78,19 +70,11 @@ func (r *customerRepo) GetByID(ctx context.Context, id int) (*models.Customer, e
 }
 
 func (r *customerRepo) GetByIdentityNumber(ctx context.Context, identityNumber string) (*models.Customer, error) {
-	query := `
-		SELECT 
-			id, name, identity_type, identity_number, identity_photo_url, phone, 
-			emergency_contact, email, address, is_blacklisted, notes, created_at, modified_at
-		FROM customers 
-		WHERE identity_number = $1 AND deleted_at IS NULL`
-
 	c := &models.Customer{}
-	err := r.db.QueryRowContext(ctx, query, identityNumber).Scan(
-		&c.ID, &c.Name, &c.IdentityType, &c.IdentityNumber, &c.IdentityPhotoURL,
-		&c.Phone, &c.EmergencyContact, &c.Email, &c.Address, &c.IsBlacklisted,
-		&c.Notes, &c.CreatedAt, &c.ModifiedAt,
-	)
+	err := r.db.QueryRowContext(ctx, `
+		SELECT id, name, identity_type, identity_number, identity_photo_url, phone, emergency_contact, email, address, is_blacklisted, notes, created_at, modified_at
+		FROM customers WHERE identity_number = $1 AND deleted_at IS NULL`, identityNumber).
+		Scan(&c.ID, &c.Name, &c.IdentityType, &c.IdentityNumber, &c.IdentityPhotoURL, &c.Phone, &c.EmergencyContact, &c.Email, &c.Address, &c.IsBlacklisted, &c.Notes, &c.CreatedAt, &c.ModifiedAt)
 	if err != nil {
 		return nil, err
 	}

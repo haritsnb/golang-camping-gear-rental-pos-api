@@ -59,14 +59,18 @@ func (r *productUnitRepo) GetByID(ctx context.Context, id int) (*models.ProductU
 }
 
 func (r *productUnitRepo) GetByUnitCode(ctx context.Context, code string) (*models.ProductUnit, error) {
+	u := &models.ProductUnit{}
 	query := `
 		SELECT pu.id, pu.product_id, p.name, pu.unit_code, pu.serial_number, pu.condition, pu.status, pu.notes, pu.created_at, pu.modified_at
 		FROM product_units pu
 		JOIN products p ON p.id = pu.product_id
 		WHERE pu.unit_code = $1 AND pu.deleted_at IS NULL`
-	u := &models.ProductUnit{}
-	err := r.db.QueryRowContext(ctx, query, code).Scan(&u.ID, &u.ProductID, &u.ProductName, &u.UnitCode, &u.SerialNumber, &u.Condition, &u.Status, &u.Notes, &u.CreatedAt, &u.ModifiedAt)
-	return u, err
+	err := r.db.QueryRowContext(ctx, query, code).
+		Scan(&u.ID, &u.ProductID, &u.ProductName, &u.UnitCode, &u.SerialNumber, &u.Condition, &u.Status, &u.Notes, &u.CreatedAt, &u.ModifiedAt)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 func (r *productUnitRepo) GetByIDWithTx(ctx context.Context, tx *sql.Tx, id int) (*models.ProductUnit, error) {

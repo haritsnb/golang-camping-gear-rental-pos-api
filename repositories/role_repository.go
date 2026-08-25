@@ -46,17 +46,23 @@ func (r *roleRepo) GetAll(ctx context.Context) ([]models.Role, error) {
 }
 
 func (r *roleRepo) GetByID(ctx context.Context, id int) (*models.Role, error) {
-	query := `SELECT id, name, description, created_at, modified_at FROM roles WHERE id = $1 AND deleted_at IS NULL`
 	role := &models.Role{}
-	err := r.db.QueryRowContext(ctx, query, id).Scan(&role.ID, &role.Name, &role.Description, &role.CreatedAt, &role.ModifiedAt)
-	return role, err
+	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, created_at, modified_at FROM roles WHERE id = $1 AND deleted_at IS NULL`, id).
+		Scan(&role.ID, &role.Name, &role.Description, &role.CreatedAt, &role.ModifiedAt)
+	if err != nil {
+		return nil, err
+	}
+	return role, nil
 }
 
 func (r *roleRepo) GetByName(ctx context.Context, name string) (*models.Role, error) {
-	query := `SELECT id, name, description, created_at, modified_at FROM roles WHERE name = $1 AND deleted_at IS NULL`
 	role := &models.Role{}
-	err := r.db.QueryRowContext(ctx, query, name).Scan(&role.ID, &role.Name, &role.Description, &role.CreatedAt, &role.ModifiedAt)
-	return role, err
+	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, created_at, modified_at FROM roles WHERE name = $1 AND deleted_at IS NULL`, name).
+		Scan(&role.ID, &role.Name, &role.Description, &role.CreatedAt, &role.ModifiedAt)
+	if err != nil {
+		return nil, err
+	}
+	return role, nil
 }
 
 func (r *roleRepo) GetDeleted(ctx context.Context) ([]models.Role, error) {

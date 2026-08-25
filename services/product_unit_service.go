@@ -59,8 +59,8 @@ func (s *productUnitService) GetDeleted(ctx context.Context) ([]models.ProductUn
 }
 
 func (s *productUnitService) Create(ctx context.Context, req models.ProductUnitCreateDTO, userID int) (*models.ProductUnit, error) {
-	existing, _ := s.repo.GetByUnitCode(ctx, req.UnitCode)
-	if existing != nil {
+	existing, err := s.repo.GetByUnitCode(ctx, req.UnitCode)
+	if err == nil && existing != nil {
 		return nil, errors.New("kode unit fisik (unit_code) sudah terdaftar")
 	}
 
@@ -80,7 +80,7 @@ func (s *productUnitService) Create(ctx context.Context, req models.ProductUnitC
 			ModifiedBy: &userID,
 		},
 	}
-	err := s.repo.Create(ctx, u)
+	err = s.repo.Create(ctx, u)
 	return u, err
 }
 

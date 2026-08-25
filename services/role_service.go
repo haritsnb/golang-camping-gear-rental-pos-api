@@ -47,8 +47,8 @@ func (s *roleService) GetDeleted(ctx context.Context) ([]models.Role, error) {
 }
 
 func (s *roleService) Create(ctx context.Context, req models.RoleCreateDTO, currentUserID int) (*models.Role, error) {
-	existing, _ := s.repo.GetByName(ctx, req.Name)
-	if existing != nil {
+	existing, err := s.repo.GetByName(ctx, req.Name)
+	if err == nil && existing != nil {
 		return nil, errors.New("nama role sudah digunakan")
 	}
 

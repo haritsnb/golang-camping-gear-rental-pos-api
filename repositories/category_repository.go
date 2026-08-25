@@ -43,14 +43,20 @@ func (r *categoryRepo) GetByID(ctx context.Context, id int) (*models.Category, e
 	c := &models.Category{}
 	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, created_at, modified_at FROM categories WHERE id = $1 AND deleted_at IS NULL`, id).
 		Scan(&c.ID, &c.Name, &c.Description, &c.CreatedAt, &c.ModifiedAt)
-	return c, err
+	if err != nil {
+		return nil, err // <-- WAJIB return nil
+	}
+	return c, nil
 }
 
 func (r *categoryRepo) GetByName(ctx context.Context, name string) (*models.Category, error) {
 	c := &models.Category{}
 	err := r.db.QueryRowContext(ctx, `SELECT id, name, description, created_at, modified_at FROM categories WHERE name = $1 AND deleted_at IS NULL`, name).
 		Scan(&c.ID, &c.Name, &c.Description, &c.CreatedAt, &c.ModifiedAt)
-	return c, err
+	if err != nil {
+		return nil, err // <-- WAJIB return nil
+	}
+	return c, nil
 }
 
 func (r *categoryRepo) GetDeleted(ctx context.Context) ([]models.Category, error) {

@@ -48,8 +48,8 @@ func (s *customerService) GetDeleted(ctx context.Context) ([]models.Customer, er
 }
 
 func (s *customerService) Create(ctx context.Context, dto models.CustomerCreateDTO, photoURL *string, userID int) (*models.Customer, error) {
-	existing, _ := s.repo.GetByIdentityNumber(ctx, dto.IdentityNumber)
-	if existing != nil {
+	existing, err := s.repo.GetByIdentityNumber(ctx, dto.IdentityNumber)
+	if err == nil && existing != nil {
 		return nil, errors.New("nomor identitas (KTP/SIM/Paspor) sudah terdaftar")
 	}
 

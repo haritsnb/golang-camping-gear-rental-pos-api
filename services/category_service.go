@@ -47,8 +47,8 @@ func (s *categoryService) GetDeleted(ctx context.Context) ([]models.Category, er
 }
 
 func (s *categoryService) Create(ctx context.Context, req models.CategoryCreateDTO, userID int) (*models.Category, error) {
-	existing, _ := s.repo.GetByName(ctx, req.Name)
-	if existing != nil {
+	existing, err := s.repo.GetByName(ctx, req.Name)
+	if err == nil && existing != nil {
 		return nil, errors.New("nama kategori sudah digunakan")
 	}
 
@@ -60,7 +60,7 @@ func (s *categoryService) Create(ctx context.Context, req models.CategoryCreateD
 			ModifiedBy: &userID,
 		},
 	}
-	err := s.repo.Create(ctx, cat)
+	err = s.repo.Create(ctx, cat)
 	return cat, err
 }
 

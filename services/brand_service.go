@@ -47,8 +47,8 @@ func (s *brandService) GetDeleted(ctx context.Context) ([]models.Brand, error) {
 }
 
 func (s *brandService) Create(ctx context.Context, req models.BrandCreateDTO, userID int) (*models.Brand, error) {
-	existing, _ := s.repo.GetByName(ctx, req.Name)
-	if existing != nil {
+	existing, err := s.repo.GetByName(ctx, req.Name)
+	if err == nil && existing != nil {
 		return nil, errors.New("nama brand sudah digunakan")
 	}
 
@@ -66,7 +66,7 @@ func (s *brandService) Create(ctx context.Context, req models.BrandCreateDTO, us
 			ModifiedBy: &userID,
 		},
 	}
-	err := s.repo.Create(ctx, b)
+	err = s.repo.Create(ctx, b)
 	return b, err
 }
 
