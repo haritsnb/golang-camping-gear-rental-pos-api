@@ -472,17 +472,45 @@
           let rows = (res.data || []).map(r => {
             let ops = "";
             if (!isTrash) {
-              if (r.status === 'booked') ops += `<button onclick="App.handover(${r.id})" class="px-2 py-0.5 bg-blue-600 text-white rounded font-semibold"><i class="fa-solid fa-handshake"></i> Handover</button><button onclick="App.cancelRental(${r.id})" class="px-1.5 py-0.5 bg-rose-600 text-white rounded" title="Batal"><i class="fa-solid fa-ban"></i></button>`;
-              if (r.status === 'active') ops += `<button onclick="App.openReturn(${r.id})" class="px-2 py-0.5 bg-purple-600 text-white rounded font-semibold"><i class="fa-solid fa-rotate-left"></i> Return</button>`;
-              if (r.status === 'returned') ops += `<button onclick="App.settlement(${r.id})" class="px-2 py-0.5 bg-green-600 text-white rounded font-semibold"><i class="fa-solid fa-calculator"></i> Settlement</button>`;
-              ops += `<button onclick="App.viewRentalDetail(${r.id})" class="px-1.5 py-0.5 bg-slate-200 text-slate-700 rounded"><i class="fa-solid fa-eye"></i></button>`;
+              if (r.status === 'booked') {
+                ops += `<button onclick="App.handover(${r.id})" class="px-2 py-0.5 bg-blue-600 text-white rounded font-semibold"><i class="fa-solid fa-handshake"></i> Handover</button>`;
+                ops += `<button onclick="App.cancelRental(${r.id})" class="px-1.5 py-0.5 bg-rose-600 text-white rounded" title="Batal"><i class="fa-solid fa-ban"></i></button>`;
+              }
+              if (r.status === 'active') {
+                ops += `<button onclick="App.openReturn(${r.id})" class="px-2 py-0.5 bg-purple-600 text-white rounded font-semibold"><i class="fa-solid fa-rotate-left"></i> Return</button>`;
+              }
+              if (r.status === 'returned') {
+                ops += `<button onclick="App.settlement(${r.id})" class="px-2 py-0.5 bg-green-600 text-white rounded font-semibold"><i class="fa-solid fa-calculator"></i> Settlement</button>`;
+              }
+              
+              // Tombol Detail selalu tampil
+              ops += `<button onclick="App.viewRentalDetail(${r.id})" class="px-1.5 py-0.5 bg-slate-200 text-slate-700 rounded" title="Detail"><i class="fa-solid fa-eye"></i></button>`;
+              
+              // HANYA TAMPILKAN TOMBOL EDIT JIKA STATUS MASIH 'booked'
+              if (r.status === 'booked') {
+                ops += `<button onclick="App.openEdit('rentals', ${r.id})" class="action-btn px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded" title="Edit Booking"><i class="fa-solid fa-pen"></i></button>`;
+              }
+
+              // Tombol Soft Delete
+              ops += `<button onclick="App.action('rentals', ${r.id}, 'soft')" class="action-btn px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded" title="Soft Delete"><i class="fa-solid fa-trash-can"></i></button>`;
+            } else {
+              // Mode Trash: Tombol Restore & Force Delete
+              ops = `
+                <button onclick="App.restore('rentals', ${r.id})" class="action-btn px-2 py-0.5 bg-green-700 text-white rounded font-bold"><i class="fa-solid fa-rotate-left"></i> Restore</button>
+                <button onclick="App.action('rentals', ${r.id}, 'force')" class="action-btn px-2 py-0.5 bg-rose-700 text-white rounded font-bold"><i class="fa-solid fa-skull"></i> Hard Delete</button>
+              `;
             }
+
             return `
               <tr class="hover:bg-slate-50 ${isTrash ? 'bg-rose-50/40':''}">
-                <td class="p-2.5 font-mono font-bold">${r.invoice_number}</td><td class="p-2.5 font-medium">${r.customer_name}</td><td class="p-2.5 text-[11px] text-slate-500">${r.start_date.substring(0,10)} s/d ${r.expected_return_date.substring(0,10)}</td>
-                <td class="p-2.5 text-right font-semibold">${this.rupiah(r.total_rental_fee)}</td><td class="p-2.5 text-right text-slate-500">${this.rupiah(r.total_deposit)}</td><td class="p-2.5 text-right font-bold text-amber-600">${this.rupiah(r.total_penalty_fee)}</td>
+                <td class="p-2.5 font-mono font-bold">${r.invoice_number}</td>
+                <td class="p-2.5 font-medium">${r.customer_name}</td>
+                <td class="p-2.5 text-[11px] text-slate-500">${r.start_date.substring(0,10)} s/d ${r.expected_return_date.substring(0,10)}</td>
+                <td class="p-2.5 text-right font-semibold">${this.rupiah(r.total_rental_fee)}</td>
+                <td class="p-2.5 text-right text-slate-500">${this.rupiah(r.total_deposit)}</td>
+                <td class="p-2.5 text-right font-bold text-amber-600">${this.rupiah(r.total_penalty_fee)}</td>
                 <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded-full font-bold text-[10px] uppercase bg-slate-100">${r.status}</span></td>
-                <td class="p-2.5 text-center space-x-1">${this.renderActions('rentals', r.id, isTrash, ops)}</td>
+                <td class="p-2.5 text-center space-x-1">${ops}</td>
               </tr>`;
           }).join("");
           $("#rentalTableBody").html(rows || `<tr><td colspan="8" class="p-3 text-center text-slate-400">Tidak ada data</td></tr>`);
