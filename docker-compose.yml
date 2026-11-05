@@ -1,0 +1,32 @@
+services:
+  # 1. Kontainer Aplikasi Go Anda
+  go-app:
+    build: .
+    ports:
+      - "${APP_PORT}:${APP_PORT}" # Mengambil port dari file .env
+    environment:
+      - APP_HOST=0.0.0.0          # 0.0.0.0 KHUSUS DI DALAM DOCKER
+      - APP_PORT=${APP_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_SSL=${DB_SSL}
+    depends_on:
+      - postgres-db
+
+  # 2. Kontainer Database PostgreSQL
+  postgres-db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${DB_USER}       # Sinkron dengan user aplikasi
+      - POSTGRES_PASSWORD=${DB_PASSWORD} # Sinkron dengan password aplikasi
+      - POSTGRES_DB=${DB_NAME}         # Sinkron dengan nama database aplikasi
+    ports:
+      - "${DB_PORT}:5432" # Memetakan port Postgres dari .env ke port internal 5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:

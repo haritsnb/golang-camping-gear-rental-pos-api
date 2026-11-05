@@ -1,0 +1,41 @@
+# ==========================================
+# File Sensitif & Kredensial
+# ==========================================
+.env
+*.env
+.env.*
+.git
+.gitignore
+
+# ==========================================
+# Dependensi Lokal & Hasil Compile (Go)
+# ==========================================
+# Mengabaikan biner hasil compile di lokal agar tidak bentrok dengan arsitektur Linux di Docker
+bin/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+__debug_bin
+app-main
+
+# ==========================================
+# Folder IDE / Code Editor
+# ==========================================
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==========================================
+# Log & File Sementara
+# ==========================================
+*.log
+logs/
+tmp/
+.air.toml

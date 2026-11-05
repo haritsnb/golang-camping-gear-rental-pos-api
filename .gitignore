@@ -1,0 +1,51 @@
+# ==========================================
+# Keamanan & Kredensial Sensitif
+# ==========================================
+# Mengabaikan semua file konfigurasi env agar password tidak bocor ke GitHub
+.env
+*.env
+.env.*
+!.env.example
+
+# ==========================================
+# Kompilasi & Hasil Build (Golang)
+# ==========================================
+# Mengabaikan file biner hasil compile di lokal
+bin/
+dist/
+main
+main.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+__debug_bin
+app-main
+
+# ==========================================
+# File Unggahan Dinamis (Uploads)
+# ==========================================
+# Mengabaikan file KYC atau foto alat camping yang diunggah saat testing di lokal,
+# tetapi tetap mempertahankan folder 'storages/' itu sendiri di Git.
+storages/*
+!storages/.gitkeep
+
+# ==========================================
+# Cache IDE / Code Editor
+# ==========================================
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==========================================
+# Log & File Sementara (Temporary)
+# ==========================================
+*.log
+logs/
+tmp/
+.air.toml
